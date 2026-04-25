@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, X, Phone, Mail, Heart, LogIn, ChevronUp, MessageCircle, ChevronDown } from 'lucide-react'
+import { Menu, X, Phone, Mail, Heart, LogIn, ChevronUp, MessageCircle, ChevronDown, Users, HeartPulse } from 'lucide-react'
 
 export default function ClientLayout({ children }) {
   const pathname = usePathname()
@@ -45,10 +45,11 @@ export default function ClientLayout({ children }) {
   }
 
   const navLinks = [
-    { name: 'HOME', href: '/' },
+    { name: 'HOME', href: '/', icon: <Menu size={20} /> },
     { 
       name: 'WHO WE ARE', 
       href: '/about',
+      icon: <Users size={20} />,
       dropdown: [
         { name: 'MISSION & VISION', href: '/about/mission' },
         { name: 'OUR OBJECTIVES', href: '/about/objectives' },
@@ -58,6 +59,7 @@ export default function ClientLayout({ children }) {
     { 
       name: 'OUR PROGRAMS', 
       href: '/programs',
+      icon: <HeartPulse size={20} />,
       dropdown: [
         { name: 'IMPROVING EDUCATION', href: '/programs/education' },
         { name: 'IMPROVING HEALTHCARE', href: '/programs/health' },
@@ -65,9 +67,9 @@ export default function ClientLayout({ children }) {
         { name: 'ENVIRONMENTAL IMPROVEMENT', href: '/programs/environment' }
       ]
     },
-    { name: 'BLOG', href: '/news' },
-    { name: 'PHOTO GALLERY', href: '/gallery' },
-    { name: 'CONTACTS', href: '/contact' },
+    { name: 'BLOG', href: '/news', icon: <MessageCircle size={20} /> },
+    { name: 'PHOTO GALLERY', href: '/gallery', icon: <LogIn size={20} /> },
+    { name: 'CONTACTS', href: '/contact', icon: <Phone size={20} /> },
   ]
 
   return (
@@ -145,44 +147,105 @@ export default function ClientLayout({ children }) {
         </div>
 
         {isMenuOpen && (
-          <div className="animate-fade-in" style={{ position: 'absolute', top: '80px', left: 0, width: '100%', backgroundColor: 'white', borderBottom: '2px solid #0056b3', boxShadow: '0 10px 20px rgba(0,0,0,0.1)', padding: '20px 0', zIndex: 999 }}>
-            <div className="container" style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-              {navLinks.map((link) => (
-                <div key={link.name}>
-                  <Link 
-                    href={link.dropdown ? '#' : link.href} 
-                    onClick={(e) => {
-                      if (link.dropdown) {
-                        e.preventDefault()
-                      } else {
-                        setIsMenuOpen(false)
-                      }
-                    }} 
-                    style={{ color: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#0056b3' : '#333', fontWeight: '800', fontSize: '1rem', padding: '10px 0', borderBottom: '1px solid #f9f9f9', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+          <div 
+            className="animate-fade-in" 
+            style={{ 
+              position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', 
+              backgroundColor: 'white', zIndex: 2000, overflowY: 'auto',
+              display: 'flex', flexDirection: 'column', padding: '0'
+            }}
+          >
+            {/* Mobile Menu Header - Fixed Top */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #f1f5f9', backgroundColor: 'white', position: 'sticky', top: 0, zIndex: 10 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <img src="/logo.png" alt="Logo" style={{ height: '35px' }} />
+                <span style={{ fontWeight: '900', color: '#0056b3', fontSize: '0.9rem' }}>NAVIGATION MENU</span>
+              </div>
+              <button onClick={() => setIsMenuOpen(false)} style={{ background: '#0056b3', border: 'none', borderRadius: '50%', width: '40px', height: '40px', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 10px rgba(0,86,179,0.3)' }}>
+                <X size={20} />
+              </button>
+            </div>
+
+            <div style={{ padding: '20px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                {navLinks.map((link, idx) => (
+                  <div 
+                    key={link.name} 
+                    className="animate-fade-up" 
+                    style={{ 
+                      animationDelay: `${idx * 50}ms`,
+                      borderBottom: '1px solid #f8fafc',
+                      paddingBottom: '5px'
+                    }}
                   >
-                    {link.name}
-                    {link.dropdown && <ChevronDown size={18} />}
-                  </Link>
-                  {link.dropdown && (
-                    <div style={{ paddingLeft: '15px', display: 'flex', flexDirection: 'column', gap: '5px', marginTop: '10px' }}>
-                      {link.dropdown.map(subItem => (
-                        <Link key={subItem.name} href={subItem.href} onClick={() => setIsMenuOpen(false)} style={{ color: pathname === subItem.href ? '#0056b3' : '#64748b', fontSize: '0.9rem', fontWeight: '700', padding: '8px 0', textDecoration: 'none' }}>
-                          - {subItem.name}
-                        </Link>
-                      ))}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Link 
+                        href={link.dropdown ? '#' : link.href} 
+                        onClick={(e) => {
+                          if (!link.dropdown) setIsMenuOpen(false)
+                          else e.preventDefault()
+                        }} 
+                        style={{ 
+                          color: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#0056b3' : '#334155', 
+                          fontWeight: '800', fontSize: '1rem', textDecoration: 'none', padding: '15px 0', flex: 1,
+                          display: 'flex', alignItems: 'center', gap: '15px'
+                        }}
+                      >
+                        <div style={{ color: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#0056b3' : '#94a3b8' }}>
+                          {link.icon}
+                        </div>
+                        {link.name}
+                      </Link>
+                      {link.dropdown && (
+                        <button 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            const el = document.getElementById(`mobile-drop-${link.name}`);
+                            if (el) el.style.display = el.style.display === 'none' ? 'flex' : 'none';
+                          }}
+                          style={{ background: '#f1f5f9', border: 'none', borderRadius: '10px', color: '#64748b', padding: '10px', width: '40px', height: '40px' }}
+                        >
+                          <ChevronDown size={18} />
+                        </button>
+                      )}
                     </div>
-                  )}
-                </div>
-              ))}
-              <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-                <Link href="/donate" onClick={() => setIsMenuOpen(false)} className="btn btn-secondary" style={{ flex: 1, textAlign: 'center', fontSize: '0.9rem' }}>
-                  DONATE NOW
-                </Link>
-                <a href={gmailUrl} target="_blank" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#ea4335', color: 'white', padding: '10px', borderRadius: '4px', textDecoration: 'none', flex: 0.5 }}>
-                  <Mail size={22} />
+                    
+                    {link.dropdown && (
+                      <div id={`mobile-drop-${link.name}`} style={{ display: 'none', flexDirection: 'column', gap: '12px', padding: '15px 0 15px 45px', backgroundColor: '#f8fafc', borderRadius: '12px', marginTop: '5px' }}>
+                        {link.dropdown.map(subItem => (
+                          <Link 
+                            key={subItem.name} 
+                            href={subItem.href} 
+                            onClick={() => setIsMenuOpen(false)} 
+                            style={{ color: pathname === subItem.href ? '#0056b3' : '#64748b', fontSize: '0.9rem', fontWeight: '800', textDecoration: 'none' }}
+                          >
+                            {subItem.name}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Mobile Menu Footer Actions */}
+            <div style={{ marginTop: 'auto', padding: '30px 20px 40px', backgroundColor: '#f8fafc', borderTop: '1px solid #f1f5f9' }}>
+              <Link 
+                href="/donate" 
+                onClick={() => setIsMenuOpen(false)} 
+                className="btn btn-secondary animate-fade-up" 
+                style={{ width: '100%', padding: '18px', borderRadius: '16px', fontSize: '1rem', marginBottom: '15px', boxShadow: '0 8px 20px rgba(40,167,69,0.2)', animationDelay: '300ms' }}
+              >
+                <Heart size={20} fill="white" style={{ marginRight: '10px' }} /> DONATE TO SUPPORT
+              </Link>
+              
+              <div className="animate-fade-up" style={{ display: 'flex', gap: '12px', animationDelay: '400ms' }}>
+                <a href={gmailUrl} target="_blank" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', backgroundColor: 'white', border: '1px solid #e2e8f0', color: '#1e293b', padding: '15px', borderRadius: '16px', textDecoration: 'none', fontWeight: '800', fontSize: '0.85rem' }}>
+                  <Mail size={18} /> EMAIL
                 </a>
-                <a href={`https://wa.me/${phoneNo}`} target="_blank" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#25D366', color: 'white', padding: '10px', borderRadius: '4px', textDecoration: 'none', flex: 0.5 }}>
-                  <MessageCircle size={22} />
+                <a href={`https://wa.me/${phoneNo}`} target="_blank" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', backgroundColor: '#dcfce7', color: '#16a34a', padding: '15px', borderRadius: '16px', textDecoration: 'none', fontWeight: '800', fontSize: '0.85rem' }}>
+                  <MessageCircle size={18} fill="#16a34a" color="#dcfce7" /> WHATSAPP
                 </a>
               </div>
             </div>

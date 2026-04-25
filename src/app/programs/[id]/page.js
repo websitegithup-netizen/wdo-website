@@ -59,7 +59,7 @@ export default async function ProgramDetail({ params }) {
               </div>
 
               <h2 className="text-2xl font-bold mb-6">Program Overview</h2>
-              <div style={{ lineHeight: '1.8', color: 'var(--text-dark)', whiteSpace: 'pre-wrap', marginBottom: '40px', textAlign: 'justify' }}>
+              <div style={{ lineHeight: '1.8', color: 'var(--text-dark)', whiteSpace: 'pre-wrap', marginBottom: '40px' }}>
                 {program.description}
               </div>
 

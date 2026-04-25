@@ -23,10 +23,10 @@ export default function About() {
               <h2 className="text-2xl font-bold mb-6" style={{ borderLeft: '4px solid var(--primary-color)', paddingLeft: '15px' }}>
                 Waqal Development Organization
               </h2>
-              <p className="text-lg text-muted mb-6" style={{ textAlign: 'justify', lineHeight: '1.8' }}>
+              <p className="text-lg text-muted mb-6" style={{ lineHeight: '1.8' }}>
                 Waqal Development Organization (WDO) is an independent, nonprofit, and nongovernmental organization providing project development solutions in the thematic areas of education, healthcare, youth development, and the environment.
               </p>
-              <p className="text-lg text-muted mb-8" style={{ textAlign: 'justify', lineHeight: '1.8' }}>
+              <p className="text-lg text-muted mb-8" style={{ lineHeight: '1.8' }}>
                 Based in Gabiley, Somaliland, WDO was established by a group of multi-disciplinary youth activists committed to delivering insightful and objective analyses on a broad range of social issues, including conflict, education, health, youth engagement, and environmental sustainability.
               </p>
               

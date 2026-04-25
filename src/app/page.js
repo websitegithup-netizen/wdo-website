@@ -111,7 +111,7 @@ export default function Home() {
           <div className="grid grid-cols-2" style={{ alignItems: 'center' }}>
             <div>
               <h2 style={{ fontWeight: '900', marginBottom: '30px', borderLeft: '6px solid #0056b3', paddingLeft: '20px', color: '#1e293b' }}>About WDO</h2>
-              <p style={{ fontSize: '1rem', color: '#64748b', lineHeight: '1.8', marginBottom: '25px', textAlign: 'justify' }}>
+              <p style={{ fontSize: '1rem', color: '#64748b', lineHeight: '1.8', marginBottom: '25px' }}>
                 Waqal Development Organization (WDO) is an independent, nonprofit, and nongovernmental organization providing project development solutions in the thematic areas of education, healthcare, youth development, and the environment. Based in Gabiley, Somaliland, WDO was established by a group of multi-disciplinary youth activists committed to delivering insightful and objective analyses on a broad range of social issues, including conflict, education, health, youth engagement, and environmental sustainability.
               </p>
               <Link href="/about" className="btn btn-outline" style={{ padding: '12px 30px', fontWeight: '800' }}>Read More About Us</Link>
