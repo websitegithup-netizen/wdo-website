@@ -122,3 +122,20 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE PROCEDURE handle_new_user();
+
+-- 6. Gallery Table
+CREATE TABLE gallery (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  title TEXT NOT NULL,
+  image_url TEXT NOT NULL,
+  folder_name TEXT DEFAULT 'General',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+ALTER TABLE gallery ENABLE ROW LEVEL SECURITY;
+
+-- Gallery Policies
+CREATE POLICY "Public can view gallery" ON gallery FOR SELECT USING (true);
+CREATE POLICY "Editors/Admins can insert gallery" ON gallery FOR INSERT WITH CHECK (is_editor());
+CREATE POLICY "Editors/Admins can update gallery" ON gallery FOR UPDATE USING (is_editor());
+CREATE POLICY "Admins can delete gallery" ON gallery FOR DELETE USING (is_admin());
+
