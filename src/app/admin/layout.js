@@ -93,6 +93,7 @@ export default function AdminLayout({ children }) {
       programs: 'Programs',
       blog: 'Blog Posts',
       slider: 'Hero Slider',
+      team: 'Our Team',
       gallery: 'Media Gallery',
       audience: 'AUDIENCE & IMPACT',
       impact: 'Impact Reports',
@@ -122,6 +123,7 @@ export default function AdminLayout({ children }) {
         { name: t.programs, icon: <Briefcase size={18} />, path: '/admin/programs' },
         { name: t.blog, icon: <FileText size={18} />, path: '/admin/posts' },
         { name: t.slider, icon: <SliderIcon size={18} />, path: '/admin/slider' },
+        { name: t.team, icon: <Users size={18} />, path: '/admin/team' },
         { name: t.gallery, icon: <ImageIcon size={18} />, path: '/admin/gallery' }
       ]
     },

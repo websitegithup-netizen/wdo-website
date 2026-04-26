@@ -17,7 +17,7 @@ export default function ClientLayout({ children }) {
   const isAdmin = pathname.startsWith('/admin')
   const isLogin = pathname === '/login'
 
-  const phoneNo = '252633084564'
+  const phoneNo = '252633084563'
   const email = 'waqaldv@gmail.com'
   const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}`
 
@@ -176,14 +176,14 @@ export default function ClientLayout({ children }) {
 
       {/* Mobile Drawer Overlay */}
       {isMenuOpen && (
-        <div 
+        <div
           onClick={() => setIsMenuOpen(false)}
-          style={{ 
-            position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', 
+          style={{
+            position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh',
             backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1999,
             backdropFilter: 'blur(4px)',
             transition: 'opacity 0.3s ease'
-          }} 
+          }}
         />
       )}
 
@@ -270,12 +270,12 @@ export default function ClientLayout({ children }) {
 
         {/* Mobile Menu Footer Actions */}
         <div style={{ marginTop: 'auto', padding: '20px', backgroundColor: '#f8fafc', borderTop: '1px solid #f1f5f9' }}>
-          <Link 
-            href="/donate" 
-            onClick={() => setIsMenuOpen(false)} 
-            style={{ 
-              display: 'block', width: '100%', padding: '12px', borderRadius: '8px', 
-              fontSize: '0.9rem', fontWeight: '900', textAlign: 'center', 
+          <Link
+            href="/donate"
+            onClick={() => setIsMenuOpen(false)}
+            style={{
+              display: 'block', width: '100%', padding: '12px', borderRadius: '8px',
+              fontSize: '0.9rem', fontWeight: '900', textAlign: 'center',
               backgroundColor: '#ffc107', color: '#002654', textDecoration: 'none',
               boxShadow: '0 4px 15px rgba(255,193,7,0.3)',
               marginBottom: '10px'
