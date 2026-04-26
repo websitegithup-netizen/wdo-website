@@ -117,10 +117,18 @@ export default function ClientLayout({ children }) {
         transition: 'all 0.4s ease'
       }}>
         <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: isMobile || isScrolled || pathname !== '/' ? '55px' : '75px', transition: 'all 0.4s ease' }}>
-          <Link href="/" onClick={() => setIsMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+          <Link href="/" onClick={() => setIsMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
+            <img 
+              src="/logo.png" 
+              alt="WDO Logo" 
+              style={{ 
+                height: isMobile || isScrolled || pathname !== '/' ? '40px' : '55px', 
+                transition: 'all 0.4s ease'
+              }} 
+            />
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-              <span style={{ fontSize: isMobile || isScrolled || pathname !== '/' ? '0.95rem' : '1.4rem', fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1' }}><span style={{ borderBottom: isMobile || isScrolled || pathname !== '/' ? '2px solid #ffc107' : '3px solid #ffc107' }}>WDO</span></span>
-              <span style={{ fontSize: isMobile || isScrolled || pathname !== '/' ? '0.95rem' : '1.4rem', fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1.4' }}>SOMALILAND</span>
+              <span style={{ fontSize: isMobile || isScrolled || pathname !== '/' ? '1rem' : '1.3rem', fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1' }}>WDO</span>
+              <span style={{ fontSize: isMobile || isScrolled || pathname !== '/' ? '1rem' : '1.3rem', fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1.4' }}>SOMALILAND</span>
             </div>
           </Link>
 
@@ -337,32 +345,32 @@ export default function ClientLayout({ children }) {
       </div>
 
       {/* Footer */}
-      <footer className="footer" style={{ backgroundColor: '#1a1a1a', color: '#ccc', padding: '60px 0 30px' }}>
+      <footer className="footer" style={{ backgroundColor: '#1a1a1a', color: '#ccc', padding: '25px 0 15px' }}>
         <div className="container">
-          <div className="grid-cols-3" style={{ display: 'grid', gap: '40px', marginBottom: '40px' }}>
+          <div className="grid-cols-3" style={{ display: 'grid', gap: '20px', marginBottom: '20px' }}>
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
-                <img src="/logo.png" alt="WDO Logo" style={{ height: '40px' }} />
-                <h3 style={{ color: 'white', margin: 0 }}>WDO SOMALILAND</h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                <img src="/logo.png" alt="WDO Logo" style={{ height: '25px' }} />
+                <h3 style={{ color: 'white', margin: 0, fontSize: '1rem' }}>WDO SOMALILAND</h3>
               </div>
-              <p style={{ fontSize: '0.9rem', lineHeight: '1.7', textAlign: 'justify' }}>
-                Waqal Development Organization (WDO) is an independent, nonprofit, and nongovernmental organization providing project development solutions in the thematic areas of education, healthcare, youth development, and the environment.
+              <p style={{ fontSize: '0.8rem', lineHeight: '1.5', textAlign: 'justify', opacity: 0.8 }}>
+                Waqal Development Organization (WDO) provides sustainable solutions in education, health, youth, and environment.
               </p>
             </div>
             <div>
-              <h4 style={{ color: 'white', marginBottom: '20px' }}>Quick Links</h4>
-              <ul style={{ listStyle: 'none', padding: 0 }}>
+              <h4 style={{ color: 'white', marginBottom: '10px', fontSize: '0.9rem' }}>Quick Links</h4>
+              <ul style={{ listStyle: 'none', padding: 0, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5px' }}>
                 {navLinks.map(link => (
                   <React.Fragment key={link.name}>
                     {link.dropdown ? (
-                      link.dropdown.map(subItem => (
-                        <li key={subItem.name} style={{ marginBottom: '10px' }}>
-                          <Link href={subItem.href} style={{ color: '#ccc', fontSize: '0.9rem' }}>{subItem.name}</Link>
+                      link.dropdown.slice(0, 2).map(subItem => (
+                        <li key={subItem.name}>
+                          <Link href={subItem.href} style={{ color: '#ccc', fontSize: '0.8rem', textDecoration: 'none' }}>{subItem.name}</Link>
                         </li>
                       ))
                     ) : (
-                      <li style={{ marginBottom: '10px' }}>
-                        <Link href={link.href} style={{ color: '#ccc', fontSize: '0.9rem' }}>{link.name}</Link>
+                      <li>
+                        <Link href={link.href} style={{ color: '#ccc', fontSize: '0.8rem', textDecoration: 'none' }}>{link.name}</Link>
                       </li>
                     )}
                   </React.Fragment>
@@ -370,21 +378,16 @@ export default function ClientLayout({ children }) {
               </ul>
             </div>
             <div>
-              <h4 style={{ color: 'white', marginBottom: '20px' }}>Contact</h4>
-              <p style={{ fontSize: '0.9rem', marginBottom: '10px' }}>Hargeisa, Somaliland</p>
-              <p style={{ fontSize: '0.9rem', marginBottom: '10px' }}>
-                Email: <a href={gmailUrl} target="_blank" style={{ color: '#ccc', textDecoration: 'none' }}>{email}</a>
-              </p>
-              <p style={{ fontSize: '0.9rem', marginBottom: '10px' }}>
-                Phone: <a href={`tel:+${phoneNo}`} onClick={handlePhoneClick} style={{ color: '#ccc', textDecoration: 'none' }}>+252 63 3084563</a>
-              </p>
-              <a href={`https://wa.me/${phoneNo}`} target="_blank" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#25D366', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '700' }}>
-                <MessageCircle size={18} fill="#25D366" color="#1a1a1a" /> Chat on WhatsApp
-              </a>
+              <h4 style={{ color: 'white', marginBottom: '10px', fontSize: '0.9rem' }}>Contact</h4>
+              <p style={{ fontSize: '0.8rem', marginBottom: '5px' }}>Hargeisa, Somaliland</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <a href={gmailUrl} target="_blank" style={{ color: '#ccc', textDecoration: 'none', fontSize: '0.8rem' }}>{email}</a>
+                <a href={`tel:+${phoneNo}`} onClick={handlePhoneClick} style={{ color: '#ccc', textDecoration: 'none', fontSize: '0.8rem' }}>+252 63 3084563</a>
+              </div>
             </div>
           </div>
-          <div style={{ borderTop: '1px solid #333', paddingTop: '20px', textAlign: 'center', fontSize: '0.8rem' }}>
-            &copy; {new Date().getFullYear()} Waqal Development Organization. All rights reserved.
+          <div style={{ borderTop: '1px solid #333', paddingTop: '10px', textAlign: 'center', fontSize: '0.7rem', opacity: 0.6 }}>
+            &copy; {new Date().getFullYear()} WDO. All rights reserved.
           </div>
         </div>
       </footer>

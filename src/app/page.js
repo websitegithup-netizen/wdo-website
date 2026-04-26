@@ -222,11 +222,21 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="section" style={{ backgroundColor: '#1e293b', textAlign: 'center', color: 'white' }}>
+      <section className="section" style={{ backgroundColor: '#002654', textAlign: 'center', color: 'white', padding: '40px 0' }}>
         <div className="container">
-          <h2 className="responsive-h1" style={{ fontWeight: '900', marginBottom: '20px', color: 'white' }}>Support Our Cause</h2>
-          <p style={{ fontSize: '1.1rem', opacity: 0.8, maxWidth: '600px', margin: '0 auto 40px' }}>Join us in building a resilient and socially responsible society in Somaliland.</p>
-          <Link href="/donate" className="btn btn-secondary" style={{ padding: '18px 40px', fontSize: '1rem' }}>Donate Now</Link>
+          <h2 style={{ fontSize: isMobile ? '1.5rem' : '2.2rem', fontWeight: '900', marginBottom: '15px', color: 'white' }}>Support Our Cause</h2>
+          <p style={{ fontSize: isMobile ? '0.9rem' : '1rem', opacity: 0.9, maxWidth: '600px', margin: '0 auto 25px' }}>Join us in building a resilient and socially responsible society in Somaliland.</p>
+          <Link href="/donate" style={{ 
+            display: 'inline-block',
+            backgroundColor: '#ffc107', 
+            color: '#002654', 
+            padding: isMobile ? '10px 25px' : '12px 35px', 
+            fontSize: isMobile ? '0.85rem' : '1rem',
+            fontWeight: '900',
+            textDecoration: 'none',
+            borderRadius: '2px',
+            boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+          }}>Donate Now</Link>
         </div>
       </section>
       
