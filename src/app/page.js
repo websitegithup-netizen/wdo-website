@@ -10,6 +10,7 @@ export default function Home() {
   const [posts, setPosts] = useState([])
   const [dbSlides, setDbSlides] = useState([])
   const [loading, setLoading] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
 
   // Default fallback slides ONLY if database is empty
   const defaultSlides = [
@@ -25,6 +26,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsMobile(window.innerWidth <= 768)
         const { data: slidesData } = await supabase.from('hero_slides').select('*').order('order_index', { ascending: true })
         if (slidesData && slidesData.length > 0) setDbSlides(slidesData)
 
@@ -38,6 +40,8 @@ export default function Home() {
     }
 
     fetchData()
+    window.addEventListener('resize', () => setIsMobile(window.innerWidth <= 768))
+    return () => window.removeEventListener('resize', () => setIsMobile(window.innerWidth <= 768))
   }, [])
 
   useEffect(() => {
@@ -56,38 +60,69 @@ export default function Home() {
     <div style={{ backgroundColor: 'white' }}>
       
       {/* VIP Image Slider Section */}
-      <section className="hero-slider" style={{ position: 'relative', height: '100vh', maxHeight: '650px', overflow: 'hidden', backgroundColor: '#ffffff' }}>
+      <section className="hero-slider" style={{ position: 'relative', height: isMobile ? '450px' : '100vh', maxHeight: isMobile ? '450px' : '650px', overflow: 'hidden', backgroundColor: '#ffffff' }}>
         {loading ? (
-          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 30, backgroundColor: '#000' }}>
-             <div className="animate-spin" style={{ width: '40px', height: '40px', border: '4px solid rgba(255,255,255,0.1)', borderTop: '4px solid #fff', borderRadius: '50%' }}></div>
+          <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div className="animate-spin" style={{ width: '40px', height: '40px', border: '4px solid #f3f3f3', borderTop: '4px solid #002654', borderRadius: '50%' }}></div>
           </div>
         ) : (
           activeSlides.map((slide, index) => (
             <div key={index} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: currentSlide === index ? 1 : 0, transition: 'opacity 0.8s ease-in-out', zIndex: currentSlide === index ? 1 : 0 }}>
-              <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: '#ffffff', backgroundImage: `url(${slide.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', transform: 'scale(1)', transition: 'transform 3.5s ease-in-out' }}></div>
-              <div className="slider-content" style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', alignItems: 'flex-end', padding: '0 10% 80px', color: 'white' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: '#002654', backgroundImage: `url(${slide.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', transform: 'scale(1)', transition: 'transform 3.5s ease-in-out' }}></div>
+              <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0, 38, 84, 0.5)' }}></div>
+              <div className="slider-content" style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', alignItems: 'center', padding: isMobile ? '0 5%' : '0 10%', color: 'white' }}>
                 <div style={{ 
                   maxWidth: '800px', 
                   transform: currentSlide === index ? 'translateY(0)' : 'translateY(30px)', 
                   opacity: currentSlide === index ? 1 : 0, 
                   transition: 'all 0.8s ease-out 0.5s',
-                  backgroundColor: 'rgba(56, 142, 60, 0.85)', /* Solid Green matching screenshot */
-                  padding: '25px 35px', 
-                  borderRadius: '4px', /* Less rounded */
-                  borderLeft: '8px solid #1b5e20', /* Dark green accent line */
-                  boxShadow: '0 15px 30px rgba(0,0,0,0.3)'
+                  textAlign: 'left'
                 }}>
-                  <h1 className="responsive-h1" style={{ 
-                  fontWeight: '900', 
-                  lineHeight: '1.2', 
-                  marginBottom: '10px', 
-                  color: '#ffffff'
-                }}>
-                  {slide.title}
-                </h1>
-                  <p className="responsive-p" style={{ marginBottom: 0, color: '#ffffff', opacity: 1, maxWidth: '600px', lineHeight: '1.6', fontSize: '1.05rem' }}>
+                  <div style={{ width: isMobile ? '40px' : '60px', height: '4px', backgroundColor: '#ffc107', marginBottom: '15px' }}></div>
+                  <h1 style={{ 
+                    fontWeight: '900', 
+                    lineHeight: '1.1', 
+                    marginBottom: '15px', 
+                    color: '#ffffff',
+                    fontSize: isMobile ? '1.8rem' : '3.5rem',
+                    textShadow: '0 2px 10px rgba(0,0,0,0.3)'
+                  }}>
+                    {slide.title}
+                  </h1>
+                  <div style={{ width: isMobile ? '40px' : '60px', height: '4px', backgroundColor: '#ffc107', marginBottom: '20px' }}></div>
+                  <p style={{ 
+                    fontSize: isMobile ? '0.9rem' : '1.1rem', 
+                    lineHeight: '1.5', 
+                    color: '#ffffff', 
+                    marginBottom: '20px', 
+                    opacity: 0.95,
+                    maxWidth: '600px'
+                  }}>
                     {slide.description}
                   </p>
+                  
+                  <Link 
+                    href={
+                      slide.title.toLowerCase().includes('education') ? '/programs/education' :
+                      slide.title.toLowerCase().includes('health') ? '/programs/health' :
+                      slide.title.toLowerCase().includes('youth') ? '/programs/youth' :
+                      slide.title.toLowerCase().includes('environment') ? '/programs/environment' :
+                      '/programs'
+                    } 
+                    style={{ 
+                      display: 'inline-block',
+                      backgroundColor: '#ffc107', 
+                      color: '#1e293b', 
+                      padding: isMobile ? '10px 25px' : '12px 35px', 
+                      fontWeight: '900', 
+                      fontSize: isMobile ? '0.85rem' : '1rem', 
+                      textDecoration: 'none',
+                      borderRadius: '2px',
+                      boxShadow: '0 10px 20px rgba(0,0,0,0.2)'
+                    }}
+                  >
+                    Read More
+                  </Link>
                 </div>
               </div>
             </div>
@@ -114,7 +149,7 @@ export default function Home() {
               <p style={{ fontSize: '1rem', color: '#64748b', lineHeight: '1.8', marginBottom: '25px' }}>
                 Waqal Development Organization (WDO) is an independent, nonprofit, and nongovernmental organization providing project development solutions in the thematic areas of education, healthcare, youth development, and the environment. Based in Gabiley, Somaliland, WDO was established by a group of multi-disciplinary youth activists committed to delivering insightful and objective analyses on a broad range of social issues, including conflict, education, health, youth engagement, and environmental sustainability.
               </p>
-              <Link href="/about" className="btn btn-outline" style={{ padding: '12px 30px', fontWeight: '800' }}>Read More About Us</Link>
+              <Link href="/about/mission" className="btn btn-outline" style={{ padding: '12px 30px', fontWeight: '800' }}>Read More About Us</Link>
             </div>
             <div className="card" style={{ 
               padding: 0, backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', boxShadow: '0 20px 40px rgba(0,0,0,0.05)', 

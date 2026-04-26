@@ -35,26 +35,26 @@ export default async function HealthPrograms() {
           <h2 style={{ fontSize: '1.8rem', fontWeight: '900', marginBottom: '40px' }}>Related Projects</h2>
           
           {programs && programs.length > 0 ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '30px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
               {programs.map((program) => (
-                <div key={program.id} className="card" style={{ border: '1px solid #eee', borderRadius: '16px', overflow: 'hidden' }}>
-                  <div style={{ position: 'relative', height: '200px' }}>
+                <div key={program.id} className="card" style={{ border: '1px solid #eee', borderRadius: '12px', overflow: 'hidden' }}>
+                  <div style={{ position: 'relative', height: '180px' }}>
                     <img 
                       src={program.image_url || 'https://images.unsplash.com/photo-1505751172107-5739a00723a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'} 
                       alt={program.title}
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   </div>
-                  <div style={{ padding: '25px' }}>
+                  <div style={{ padding: '20px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#64748b', fontSize: '0.75rem', marginBottom: '10px' }}>
-                      <Calendar size={14} /> {new Date(program.created_at).toLocaleDateString()}
+                      <Calendar size={12} /> {new Date(program.created_at).toLocaleDateString()}
                     </div>
-                    <h3 style={{ fontSize: '1.2rem', fontWeight: '900', marginBottom: '12px' }}>{program.title}</h3>
-                    <p style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: '20px', lineHeight: '1.5' }}>
-                      {program.description?.substring(0, 120)}...
+                    <h3 style={{ fontSize: '1rem', fontWeight: '900', marginBottom: '10px' }}>{program.title}</h3>
+                    <p style={{ color: '#64748b', fontSize: '0.85rem', marginBottom: '15px', lineHeight: '1.5' }}>
+                      {program.description?.substring(0, 100)}...
                     </p>
-                    <Link href={`/programs/${program.id}`} style={{ color: '#dc2626', fontWeight: '800', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                      View Details <ArrowRight size={16} />
+                    <Link href={`/programs/${program.id}`} style={{ color: '#dc2626', fontWeight: '800', fontSize: '0.85rem', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                      View Details <ArrowRight size={14} />
                     </Link>
                   </div>
                 </div>

@@ -1,14 +1,17 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, X, Phone, Mail, Heart, LogIn, ChevronUp, MessageCircle, ChevronDown, Users, HeartPulse } from 'lucide-react'
+import { Menu, X, Phone, Mail, Heart, LogIn, ChevronUp, MessageCircle, ChevronDown, Users, HeartPulse, Search, Globe } from 'lucide-react'
 
 export default function ClientLayout({ children }) {
   const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [showScrollUp, setShowScrollUp] = useState(false)
+  
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   
   const isAdmin = pathname.startsWith('/admin')
   const isLogin = pathname === '/login'
@@ -18,15 +21,18 @@ export default function ClientLayout({ children }) {
   const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}`
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 400) {
-        setShowScrollUp(true)
-      } else {
-        setShowScrollUp(false)
-      }
+    const handleCheck = () => {
+      setIsMobile(window.innerWidth <= 768)
+      setIsScrolled(window.scrollY > 20)
     }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    
+    handleCheck()
+    window.addEventListener('scroll', handleCheck)
+    window.addEventListener('resize', handleCheck)
+    return () => {
+      window.removeEventListener('scroll', handleCheck)
+      window.removeEventListener('resize', handleCheck)
+    }
   }, [])
 
   const scrollToTop = () => {
@@ -74,58 +80,66 @@ export default function ClientLayout({ children }) {
 
   return (
     <>
-      <div style={{ backgroundColor: '#0056b3', color: 'white', padding: '0.4rem 0', fontSize: '0.75rem', fontWeight: '700' }}>
-        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div className="hidden-mobile" style={{ display: 'flex', gap: '1.5rem' }}>
-            <a href={gmailUrl} target="_blank" style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <Mail size={12} /> {email}
-            </a>
-            <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-               <a 
-                href={`tel:+${phoneNo}`} 
-                onClick={handlePhoneClick}
-                style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px' }}
-              >
-                <Phone size={12} /> +252 63 3084563
-              </a>
-              <a href={`https://wa.me/${phoneNo}`} target="_blank" style={{ color: '#25D366', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                <MessageCircle size={14} fill="#25D366" color="#fff" /> WhatsApp
-              </a>
-            </div>
-          </div>
-          <div style={{ display: 'flex', gap: '1.5rem', marginLeft: 'auto' }}>
-            <Link href="/donate" style={{ color: '#FDB813', display: 'flex', alignItems: 'center', gap: '5px' }}><Heart size={12} fill="#FDB813" /> DONATIONS</Link>
-            <Link href="/login" style={{ color: 'white', display: 'flex', alignItems: 'center', gap: '5px' }}><LogIn size={12} /> STAFF LOGIN</Link>
-          </div>
+      {/* Top Bar - Hidden on Mobile */}
+      <div className="hidden-mobile" style={{ 
+        backgroundColor: isScrolled ? '#001a3a' : '#002654', 
+        color: 'white', 
+        padding: isScrolled ? '0' : '8px 0', 
+        borderBottom: '1px solid rgba(255,255,255,0.1)',
+        maxHeight: isScrolled ? '0' : '50px',
+        overflow: 'hidden',
+        transition: 'all 0.4s ease',
+        position: 'fixed',
+        top: 0,
+        width: '100%',
+        zIndex: 1001
+      }}>
+        <div className="container" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '25px' }}>
+          <a href={`tel:+${phoneNo}`} onClick={handlePhoneClick} style={{ color: 'white', fontSize: '0.8rem', fontWeight: '700', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Phone size={14} fill="#ffc107" color="#ffc107" /> +252 63 3084563
+          </a>
+          <a href={gmailUrl} target="_blank" style={{ color: 'white', fontSize: '0.8rem', fontWeight: '700', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Mail size={14} fill="#ffc107" color="#ffc107" /> waqaldv@gmail.com
+          </a>
         </div>
       </div>
 
-      <header className="header" style={{ position: 'sticky', top: 0, zIndex: 1000, backgroundColor: 'white', borderBottom: '1px solid #eee' }}>
-        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '80px' }}>
-          <Link href="/" onClick={() => setIsMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-            <img src="/logo.png" alt="WDO Logo" style={{ height: '50px', width: 'auto' }} />
-            <span style={{ fontSize: '1.1rem', fontWeight: '900', color: '#0056b3', letterSpacing: '-0.5px' }}>WDO SOMALILAND</span>
+      <header className="header" style={{ 
+        position: 'fixed', 
+        top: isMobile ? '0' : (isScrolled ? '0' : '38px'), 
+        width: '100%',
+        zIndex: 1000, 
+        backgroundColor: isMobile ? '#002654' : (isScrolled ? '#002654' : 'transparent'), 
+        color: 'white', 
+        boxShadow: isScrolled || isMobile ? '0 4px 15px rgba(0,0,0,0.2)' : 'none',
+        transition: 'all 0.4s ease'
+      }}>
+        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: isMobile ? '55px' : (isScrolled ? '60px' : '75px'), transition: 'all 0.4s ease' }}>
+          <Link href="/" onClick={() => setIsMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+              <span style={{ fontSize: isMobile ? '0.9rem' : '1.4rem', fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1' }}><span style={{ borderBottom: isMobile ? '2px solid #ffc107' : '3px solid #ffc107' }}>WDO</span></span>
+              <span style={{ fontSize: isMobile ? '0.9rem' : '1.4rem', fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1.4' }}>SOMALILAND</span>
+            </div>
           </Link>
 
-          <nav className="hidden-mobile" style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+          <nav className="hidden-mobile" style={{ display: 'flex', gap: '1.2rem', alignItems: 'center', marginLeft: 'auto', marginRight: '20px' }}>
             {navLinks.map((link) => (
-              <div key={link.name} className={link.dropdown ? "nav-dropdown-container" : ""} style={{ position: 'relative', height: '80px', display: 'flex', alignItems: 'center' }}>
+              <div key={link.name} className={link.dropdown ? "nav-dropdown-container" : ""} style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center' }}>
                 <Link 
                   href={link.dropdown ? '#' : link.href} 
                   onClick={(e) => link.dropdown && e.preventDefault()}
-                  style={{ color: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#0056b3' : '#333', fontWeight: '800', fontSize: '0.8rem', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '3px', cursor: link.dropdown ? 'default' : 'pointer' }}
+                  style={{ color: 'white', fontWeight: '700', fontSize: '0.75rem', textDecoration: 'none', letterSpacing: '0.5px' }}
                 >
                   {link.name}
-                  {link.dropdown && <ChevronDown size={14} style={{ marginTop: '2px' }} />}
                 </Link>
                 {link.dropdown && (
                   <div className="nav-dropdown animate-fade-in" style={{ 
-                    position: 'absolute', top: '80px', left: 0, backgroundColor: 'white', 
+                    position: 'absolute', top: '100%', left: 0, backgroundColor: 'white', 
                     minWidth: '220px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', 
-                    borderTop: '3px solid #0056b3', display: 'none', flexDirection: 'column', zIndex: 1000
+                    borderTop: '4px solid #ffc107', display: 'none', flexDirection: 'column', zIndex: 1000
                   }}>
                     {link.dropdown.map(subItem => (
-                      <Link key={subItem.name} href={subItem.href} className="nav-dropdown-item" style={{ padding: '15px 20px', color: '#333', fontSize: '0.85rem', fontWeight: '800', borderBottom: '1px solid #f1f5f9', textDecoration: 'none', transition: 'all 0.2s' }}>
+                      <Link key={subItem.name} href={subItem.href} className="nav-dropdown-item" style={{ padding: '12px 20px', color: '#333', fontSize: '0.8rem', fontWeight: '700', borderBottom: '1px solid #f1f5f9', textDecoration: 'none' }}>
                         {subItem.name}
                       </Link>
                     ))}
@@ -135,16 +149,20 @@ export default function ClientLayout({ children }) {
             ))}
           </nav>
 
-          <button className="show-mobile" onClick={() => setIsMenuOpen(!isMenuOpen)} style={{ background: 'none', border: 'none', color: '#0056b3', cursor: 'pointer', padding: '5px' }}>
-            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
-
-          <div className="hidden-mobile">
-            <Link href="/donate" className="btn btn-secondary" style={{ padding: '0.6rem 1.5rem', fontSize: '0.8rem' }}>
-              DONATE NOW
+          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <Link href="/donate" className="hidden-mobile" style={{ 
+              backgroundColor: '#ffc107', color: '#002654', padding: '8px 18px', 
+              fontWeight: '900', fontSize: '0.8rem', textDecoration: 'none', 
+              borderRadius: '2px', display: 'block'
+            }}>
+              DONATE
             </Link>
+            <button className="show-mobile" onClick={() => setIsMenuOpen(!isMenuOpen)} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', padding: '5px' }}>
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
           </div>
         </div>
+      </header>
 
         {isMenuOpen && (
           <div 
@@ -156,17 +174,19 @@ export default function ClientLayout({ children }) {
             }}
           >
             {/* Mobile Menu Header - Fixed Top */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #f1f5f9', backgroundColor: 'white', position: 'sticky', top: 0, zIndex: 10 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px 20px', borderBottom: '1px solid #f1f5f9', backgroundColor: '#002654', position: 'sticky', top: 0, zIndex: 10 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <img src="/logo.png" alt="Logo" style={{ height: '35px' }} />
-                <span style={{ fontWeight: '900', color: '#0056b3', fontSize: '0.9rem' }}>NAVIGATION MENU</span>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                  <span style={{ fontSize: '1.1rem', fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1' }}><span style={{ borderBottom: '3px solid #ffc107' }}>WDO</span></span>
+                  <span style={{ fontSize: '1.1rem', fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1.4' }}>SOMALILAND</span>
+                </div>
               </div>
-              <button onClick={() => setIsMenuOpen(false)} style={{ background: '#0056b3', border: 'none', borderRadius: '50%', width: '40px', height: '40px', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 10px rgba(0,86,179,0.3)' }}>
-                <X size={20} />
+              <button onClick={() => setIsMenuOpen(false)} style={{ background: '#ffc107', border: 'none', borderRadius: '50%', width: '32px', height: '32px', color: '#002654', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <X size={16} />
               </button>
             </div>
 
-            <div style={{ padding: '20px' }}>
+            <div style={{ padding: '10px 20px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                 {navLinks.map((link, idx) => (
                   <div 
@@ -186,13 +206,13 @@ export default function ClientLayout({ children }) {
                           else e.preventDefault()
                         }} 
                         style={{ 
-                          color: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#0056b3' : '#334155', 
-                          fontWeight: '800', fontSize: '1rem', textDecoration: 'none', padding: '15px 0', flex: 1,
-                          display: 'flex', alignItems: 'center', gap: '15px'
+                          color: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#002654' : '#334155', 
+                          fontWeight: '800', fontSize: '0.9rem', textDecoration: 'none', padding: '12px 0', flex: 1,
+                          display: 'flex', alignItems: 'center', gap: '12px'
                         }}
                       >
-                        <div style={{ color: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#0056b3' : '#94a3b8' }}>
-                          {link.icon}
+                        <div style={{ color: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#002654' : '#94a3b8' }}>
+                          {link.icon && React.cloneElement(link.icon, { size: 18 })}
                         </div>
                         {link.name}
                       </Link>
@@ -203,21 +223,21 @@ export default function ClientLayout({ children }) {
                             const el = document.getElementById(`mobile-drop-${link.name}`);
                             if (el) el.style.display = el.style.display === 'none' ? 'flex' : 'none';
                           }}
-                          style={{ background: '#f1f5f9', border: 'none', borderRadius: '10px', color: '#64748b', padding: '10px', width: '40px', height: '40px' }}
+                          style={{ background: '#f1f5f9', border: 'none', borderRadius: '8px', color: '#64748b', padding: '5px', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                         >
-                          <ChevronDown size={18} />
+                          <ChevronDown size={16} />
                         </button>
                       )}
                     </div>
                     
                     {link.dropdown && (
-                      <div id={`mobile-drop-${link.name}`} style={{ display: 'none', flexDirection: 'column', gap: '12px', padding: '15px 0 15px 45px', backgroundColor: '#f8fafc', borderRadius: '12px', marginTop: '5px' }}>
+                      <div id={`mobile-drop-${link.name}`} style={{ display: 'none', flexDirection: 'column', gap: '10px', padding: '10px 0 10px 40px', backgroundColor: '#f8fafc', borderRadius: '10px', marginTop: '5px' }}>
                         {link.dropdown.map(subItem => (
                           <Link 
                             key={subItem.name} 
                             href={subItem.href} 
                             onClick={() => setIsMenuOpen(false)} 
-                            style={{ color: pathname === subItem.href ? '#0056b3' : '#64748b', fontSize: '0.9rem', fontWeight: '800', textDecoration: 'none' }}
+                            style={{ color: pathname === subItem.href ? '#0056b3' : '#64748b', fontSize: '0.85rem', fontWeight: '800', textDecoration: 'none' }}
                           >
                             {subItem.name}
                           </Link>
@@ -230,28 +250,31 @@ export default function ClientLayout({ children }) {
             </div>
 
             {/* Mobile Menu Footer Actions */}
-            <div style={{ marginTop: 'auto', padding: '30px 20px 40px', backgroundColor: '#f8fafc', borderTop: '1px solid #f1f5f9' }}>
+            <div style={{ marginTop: 'auto', padding: '20px', backgroundColor: '#f8fafc', borderTop: '1px solid #f1f5f9' }}>
               <Link 
                 href="/donate" 
                 onClick={() => setIsMenuOpen(false)} 
-                className="btn btn-secondary animate-fade-up" 
-                style={{ width: '100%', padding: '18px', borderRadius: '16px', fontSize: '1rem', marginBottom: '15px', boxShadow: '0 8px 20px rgba(40,167,69,0.2)', animationDelay: '300ms' }}
+                style={{ 
+                  display: 'block', width: '100%', padding: '14px', borderRadius: '8px', 
+                  fontSize: '0.95rem', fontWeight: '900', textAlign: 'center', 
+                  backgroundColor: '#ffc107', color: '#002654', textDecoration: 'none',
+                  boxShadow: '0 4px 15px rgba(255,193,7,0.3)'
+                }}
               >
-                <Heart size={20} fill="white" style={{ marginRight: '10px' }} /> DONATE TO SUPPORT
+                DONATE TO SUPPORT OUR MISSION
               </Link>
               
-              <div className="animate-fade-up" style={{ display: 'flex', gap: '12px', animationDelay: '400ms' }}>
-                <a href={gmailUrl} target="_blank" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', backgroundColor: 'white', border: '1px solid #e2e8f0', color: '#1e293b', padding: '15px', borderRadius: '16px', textDecoration: 'none', fontWeight: '800', fontSize: '0.85rem' }}>
-                  <Mail size={18} /> EMAIL
+              <div className="animate-fade-up" style={{ display: 'flex', gap: '10px', animationDelay: '400ms' }}>
+                <a href={gmailUrl} target="_blank" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', backgroundColor: 'white', border: '1px solid #e2e8f0', color: '#1e293b', padding: '12px', borderRadius: '12px', textDecoration: 'none', fontWeight: '800', fontSize: '0.8rem' }}>
+                  <Mail size={16} /> EMAIL
                 </a>
-                <a href={`https://wa.me/${phoneNo}`} target="_blank" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', backgroundColor: '#dcfce7', color: '#16a34a', padding: '15px', borderRadius: '16px', textDecoration: 'none', fontWeight: '800', fontSize: '0.85rem' }}>
-                  <MessageCircle size={18} fill="#16a34a" color="#dcfce7" /> WHATSAPP
+                <a href={`https://wa.me/${phoneNo}`} target="_blank" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', backgroundColor: '#dcfce7', color: '#16a34a', padding: '12px', borderRadius: '12px', textDecoration: 'none', fontWeight: '800', fontSize: '0.8rem' }}>
+                  <MessageCircle size={16} fill="#16a34a" color="#dcfce7" /> WHATSAPP
                 </a>
               </div>
             </div>
           </div>
         )}
-      </header>
 
       <main className="main-content">
         {children}
@@ -324,11 +347,20 @@ export default function ClientLayout({ children }) {
             <div>
               <h4 style={{ color: 'white', marginBottom: '20px' }}>Quick Links</h4>
               <ul style={{ listStyle: 'none', padding: 0 }}>
-                {navLinks.map(link => (
-                  <li key={link.name} style={{ marginBottom: '10px' }}>
-                    <Link href={link.href} style={{ color: '#ccc', fontSize: '0.9rem' }}>{link.name}</Link>
-                  </li>
-                ))}
+                {navLinks.map(link => {
+                  if (link.dropdown) {
+                    return link.dropdown.map(subItem => (
+                      <li key={subItem.name} style={{ marginBottom: '10px' }}>
+                        <Link href={subItem.href} style={{ color: '#ccc', fontSize: '0.9rem' }}>{subItem.name}</Link>
+                      </li>
+                    ))
+                  }
+                  return (
+                    <li key={link.name} style={{ marginBottom: '10px' }}>
+                      <Link href={link.href} style={{ color: '#ccc', fontSize: '0.9rem' }}>{link.name}</Link>
+                    </li>
+                  )
+                })}
               </ul>
             </div>
             <div>

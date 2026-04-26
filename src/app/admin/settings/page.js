@@ -28,11 +28,13 @@ export default function AdminSettings() {
   useEffect(() => {
     const fetchSettings = async () => {
       const { data: { user } } = await supabase.auth.getUser()
-      if (user?.user_metadata) {
-        setEmailNotifications(user.user_metadata.email_notifications !== false)
-        setDonationAlerts(user.user_metadata.donation_alerts !== false)
-        setLanguage(user.user_metadata.language || 'English')
-        setTheme(user.user_metadata.theme || 'Light')
+      if (user) {
+        if (user.user_metadata) {
+          setEmailNotifications(user.user_metadata.email_notifications !== false)
+          setDonationAlerts(user.user_metadata.donation_alerts !== false)
+          setLanguage(user.user_metadata.language || 'English')
+          setTheme(user.user_metadata.theme || 'Light')
+        }
       }
       setLoading(false)
     }
