@@ -106,25 +106,25 @@ export default function ClientLayout({ children }) {
         </div>
       </div>
 
-      <header className="header" style={{ 
-        position: 'fixed', 
-        top: isMobile || isScrolled ? '0' : '38px', 
+      <header className="header" style={{
+        position: 'fixed',
+        top: isMobile || isScrolled ? '0' : '38px',
         width: '100%',
-        zIndex: 1000, 
-        backgroundColor: !mounted || isMobile || isScrolled || pathname !== '/' ? '#002654' : 'transparent', 
-        color: 'white', 
+        zIndex: 1000,
+        backgroundColor: !mounted || isMobile || isScrolled || pathname !== '/' ? '#002654' : 'transparent',
+        color: 'white',
         boxShadow: isScrolled || isMobile || pathname !== '/' ? '0 4px 15px rgba(0,0,0,0.2)' : 'none',
         transition: 'all 0.4s ease'
       }}>
         <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: isMobile || isScrolled || pathname !== '/' ? '55px' : '75px', transition: 'all 0.4s ease' }}>
           <Link href="/" onClick={() => setIsMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
-            <img 
-              src="/logo.png" 
-              alt="WDO Logo" 
-              style={{ 
-                height: isMobile || isScrolled || pathname !== '/' ? '40px' : '55px', 
+            <img
+              src="/logo.png"
+              alt="WDO Logo"
+              style={{
+                height: isMobile || isScrolled || pathname !== '/' ? '40px' : '55px',
                 transition: 'all 0.4s ease'
-              }} 
+              }}
             />
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
               <span style={{ fontSize: isMobile || isScrolled || pathname !== '/' ? '1rem' : '1.3rem', fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1' }}>WDO</span>
@@ -174,119 +174,128 @@ export default function ClientLayout({ children }) {
         </div>
       </header>
 
+      {/* Mobile Drawer Overlay */}
       {isMenuOpen && (
-        <div
-          className="animate-fade-in"
-          style={{
-            position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh',
-            backgroundColor: 'white', zIndex: 2000, overflowY: 'auto',
-            display: 'flex', flexDirection: 'column', padding: '0'
-          }}
-        >
-          {/* Mobile Menu Header - Fixed Top */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px 20px', borderBottom: '1px solid #f1f5f9', backgroundColor: '#002654', position: 'sticky', top: 0, zIndex: 10 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                <span style={{ fontSize: '1.1rem', fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1' }}><span style={{ borderBottom: '3px solid #ffc107' }}>WDO</span></span>
-                <span style={{ fontSize: '1.1rem', fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1.4' }}>SOMALILAND</span>
-              </div>
-            </div>
-            <button onClick={() => setIsMenuOpen(false)} style={{ background: '#ffc107', border: 'none', borderRadius: '50%', width: '32px', height: '32px', color: '#002654', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <X size={16} />
-            </button>
-          </div>
-
-          <div style={{ padding: '10px 20px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-              {navLinks.map((link, idx) => (
-                <div
-                  key={link.name}
-                  className="animate-fade-up"
-                  style={{
-                    animationDelay: `${idx * 50}ms`,
-                    borderBottom: '1px solid #f8fafc',
-                    paddingBottom: '5px'
-                  }}
-                >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Link
-                      href={link.dropdown ? '#' : link.href}
-                      onClick={(e) => {
-                        if (!link.dropdown) setIsMenuOpen(false)
-                        else e.preventDefault()
-                      }}
-                      style={{
-                        color: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#002654' : '#334155',
-                        fontWeight: '800', fontSize: '0.9rem', textDecoration: 'none', padding: '12px 0', flex: 1,
-                        display: 'flex', alignItems: 'center', gap: '12px'
-                      }}
-                    >
-                      <div style={{ color: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#002654' : '#94a3b8' }}>
-                        {link.icon && React.cloneElement(link.icon, { size: 18 })}
-                      </div>
-                      {link.name}
-                    </Link>
-                    {link.dropdown && (
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          const el = document.getElementById(`mobile-drop-${link.name}`);
-                          if (el) el.style.display = el.style.display === 'none' ? 'flex' : 'none';
-                        }}
-                        style={{ background: '#f1f5f9', border: 'none', borderRadius: '8px', color: '#64748b', padding: '5px', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                      >
-                        <ChevronDown size={16} />
-                      </button>
-                    )}
-                  </div>
-
-                  {link.dropdown && (
-                    <div id={`mobile-drop-${link.name}`} style={{ display: 'none', flexDirection: 'column', gap: '10px', padding: '10px 0 10px 40px', backgroundColor: '#f8fafc', borderRadius: '10px', marginTop: '5px' }}>
-                      {link.dropdown.map(subItem => (
-                        <Link
-                          key={subItem.name}
-                          href={subItem.href}
-                          onClick={() => setIsMenuOpen(false)}
-                          style={{ color: pathname === subItem.href ? '#0056b3' : '#64748b', fontSize: '0.85rem', fontWeight: '800', textDecoration: 'none' }}
-                        >
-                          {subItem.name}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Mobile Menu Footer Actions */}
-          <div style={{ marginTop: 'auto', padding: '20px', backgroundColor: '#f8fafc', borderTop: '1px solid #f1f5f9' }}>
-            <Link
-              href="/donate"
-              onClick={() => setIsMenuOpen(false)}
-              style={{
-                display: 'block', width: '100%', padding: '14px', borderRadius: '8px',
-                fontSize: '0.95rem', fontWeight: '900', textAlign: 'center',
-                backgroundColor: '#ffc107', color: '#002654', textDecoration: 'none',
-                boxShadow: '0 4px 15px rgba(255,193,7,0.3)'
-              }}
-            >
-              DONATE TO SUPPORT OUR MISSION
-            </Link>
-
-            <div className="animate-fade-up" style={{ display: 'flex', gap: '10px', animationDelay: '400ms' }}>
-              <a href={gmailUrl} target="_blank" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', backgroundColor: 'white', border: '1px solid #e2e8f0', color: '#1e293b', padding: '12px', borderRadius: '12px', textDecoration: 'none', fontWeight: '800', fontSize: '0.8rem' }}>
-                <Mail size={16} /> EMAIL
-              </a>
-              <a href={`https://wa.me/${phoneNo}`} target="_blank" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', backgroundColor: '#dcfce7', color: '#16a34a', padding: '12px', borderRadius: '12px', textDecoration: 'none', fontWeight: '800', fontSize: '0.8rem' }}>
-                <MessageCircle size={16} fill="#16a34a" color="#dcfce7" /> WHATSAPP
-              </a>
-            </div>
-          </div>
-        </div>
+        <div 
+          onClick={() => setIsMenuOpen(false)}
+          style={{ 
+            position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', 
+            backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1999,
+            backdropFilter: 'blur(4px)',
+            transition: 'opacity 0.3s ease'
+          }} 
+        />
       )}
 
-      <main className="main-content" style={{ 
+      {/* Side Drawer Navigation */}
+      <div
+        style={{
+          position: 'fixed', top: 0, right: 0, width: '280px', height: '100vh',
+          backgroundColor: 'white', zIndex: 2000, overflowY: 'auto',
+          display: 'flex', flexDirection: 'column', padding: '0',
+          boxShadow: '-5px 0 25px rgba(0,0,0,0.1)',
+          transform: isMenuOpen ? 'translateX(0)' : 'translateX(100%)',
+          transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          visibility: mounted ? (isMenuOpen ? 'visible' : 'hidden') : 'hidden'
+        }}
+      >
+        {/* Mobile Menu Header - Fixed Top */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px 20px', borderBottom: '1px solid #f1f5f9', backgroundColor: '#002654', position: 'sticky', top: 0, zIndex: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+              <span style={{ fontSize: '1rem', fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1' }}>WDO</span>
+              <span style={{ fontSize: '0.8rem', fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1.4' }}>SOMALILAND</span>
+            </div>
+          </div>
+          <button onClick={() => setIsMenuOpen(false)} style={{ background: '#ffc107', border: 'none', borderRadius: '50%', width: '32px', height: '32px', color: '#002654', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+            <X size={16} />
+          </button>
+        </div>
+
+        <div style={{ padding: '10px 20px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+            {navLinks.map((link, idx) => (
+              <div
+                key={link.name}
+                style={{
+                  borderBottom: '1px solid #f8fafc',
+                  paddingBottom: '5px'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <Link
+                    href={link.dropdown ? '#' : link.href}
+                    onClick={(e) => {
+                      if (!link.dropdown) setIsMenuOpen(false)
+                      else {
+                        e.preventDefault();
+                        const el = document.getElementById(`mobile-drop-${link.name}`);
+                        if (el) el.style.display = el.style.display === 'none' ? 'flex' : 'none';
+                      }
+                    }}
+                    style={{
+                      color: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#002654' : '#334155',
+                      fontWeight: '800', fontSize: '0.9rem', textDecoration: 'none', padding: '12px 0', flex: 1,
+                      display: 'flex', alignItems: 'center', gap: '12px'
+                    }}
+                  >
+                    <div style={{ color: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#002654' : '#94a3b8' }}>
+                      {link.icon && React.cloneElement(link.icon, { size: 18 })}
+                    </div>
+                    {link.name}
+                  </Link>
+                  {link.dropdown && (
+                    <ChevronDown size={14} color="#94a3b8" />
+                  )}
+                </div>
+
+                {link.dropdown && (
+                  <div id={`mobile-drop-${link.name}`} style={{ display: 'none', flexDirection: 'column', gap: '10px', padding: '10px 0 10px 40px', backgroundColor: '#f8fafc', borderRadius: '8px', marginBottom: '10px' }}>
+                    {link.dropdown.map(subItem => (
+                      <Link
+                        key={subItem.name}
+                        href={subItem.href}
+                        onClick={() => setIsMenuOpen(false)}
+                        style={{ color: pathname === subItem.href ? '#002654' : '#64748b', fontSize: '0.85rem', fontWeight: '800', textDecoration: 'none' }}
+                      >
+                        {subItem.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile Menu Footer Actions */}
+        <div style={{ marginTop: 'auto', padding: '20px', backgroundColor: '#f8fafc', borderTop: '1px solid #f1f5f9' }}>
+          <Link 
+            href="/donate" 
+            onClick={() => setIsMenuOpen(false)} 
+            style={{ 
+              display: 'block', width: '100%', padding: '12px', borderRadius: '8px', 
+              fontSize: '0.9rem', fontWeight: '900', textAlign: 'center', 
+              backgroundColor: '#ffc107', color: '#002654', textDecoration: 'none',
+              boxShadow: '0 4px 15px rgba(255,193,7,0.3)',
+              marginBottom: '10px'
+            }}
+          >
+            DONATE NOW
+          </Link>
+
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <a href={gmailUrl} target="_blank" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', backgroundColor: 'white', border: '1px solid #e2e8f0', color: '#1e293b', padding: '10px', borderRadius: '12px', textDecoration: 'none', fontWeight: '800', fontSize: '0.65rem' }}>
+              <Mail size={14} /> EMAIL
+            </a>
+            <a href={`https://wa.me/${phoneNo}`} target="_blank" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', backgroundColor: '#dcfce7', color: '#16a34a', padding: '10px', borderRadius: '12px', textDecoration: 'none', fontWeight: '800', fontSize: '0.65rem' }}>
+              <MessageCircle size={14} fill="#16a34a" color="#dcfce7" /> WHATSAPP
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <main className="main-content" style={{
         paddingTop: pathname === '/' ? '0' : (isMobile ? '55px' : '115px'),
         minHeight: '80vh'
       }}>
