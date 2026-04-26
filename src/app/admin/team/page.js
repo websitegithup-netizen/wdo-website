@@ -6,7 +6,7 @@ import {
   Plus, Edit2, Trash2, X, Save, 
   Image as ImageIcon, Loader2,
   CheckCircle2, AlertCircle, Search,
-  User, Briefcase, Hash
+  User, Briefcase, Hash, Globe, MessageCircle, Mail
 } from 'lucide-react'
 
 export default function TeamManagement() {
@@ -22,7 +22,10 @@ export default function TeamManagement() {
     name: '',
     role: '',
     image_url: '',
-    order_index: 0
+    order_index: 0,
+    facebook_url: '',
+    whatsapp_no: '',
+    email: ''
   })
 
   const [userRole, setUserRole] = useState('Viewer')
@@ -53,7 +56,7 @@ export default function TeamManagement() {
     
     if (error) {
       if (error.code === 'PGRST116' || error.message.includes('relation "team" does not exist')) {
-        setStatus({ type: 'error', text: 'Database Error: Table "team" not found. Please create it in Supabase dashboard with columns: name, role, image_url, order_index.' })
+        setStatus({ type: 'error', text: 'Database Error: Table "team" not found. Please create it in Supabase dashboard with columns: name, role, image_url, order_index, facebook_url, whatsapp_no, email.' })
       } else {
         setStatus({ type: 'error', text: error.message })
       }
@@ -144,7 +147,7 @@ export default function TeamManagement() {
         {(userRole === 'Super Admin' || userRole === 'Editor') && (
           <button 
             onClick={() => {
-              setFormData({ name: '', role: '', image_url: '', order_index: members.length })
+              setFormData({ name: '', role: '', image_url: '', order_index: members.length, facebook_url: '', whatsapp_no: '', email: '' })
               setIsEditing(null)
               setIsModalOpen(true)
             }}
@@ -184,7 +187,15 @@ export default function TeamManagement() {
           filteredMembers.map(member => (
             <div key={member.id} style={{ backgroundColor: 'white', borderRadius: '24px', padding: '25px', border: '1px solid #e2e8f0', textAlign: 'center', position: 'relative', boxShadow: '0 4px 15px rgba(0,0,0,0.02)' }}>
               <div style={{ position: 'absolute', top: '15px', right: '15px', display: 'flex', gap: '8px' }}>
-                <button onClick={() => { setFormData(member); setIsEditing(member.id); setIsModalOpen(true); }} style={{ background: '#f8fafc', border: '1px solid #e2e8f0', padding: '8px', borderRadius: '10px', color: '#0056b3', cursor: 'pointer' }}><Edit2 size={16} /></button>
+                <button onClick={() => { setFormData({
+                  name: member.name,
+                  role: member.role,
+                  image_url: member.image_url,
+                  order_index: member.order_index,
+                  facebook_url: member.facebook_url || '',
+                  whatsapp_no: member.whatsapp_no || '',
+                  email: member.email || ''
+                }); setIsEditing(member.id); setIsModalOpen(true); }} style={{ background: '#f8fafc', border: '1px solid #e2e8f0', padding: '8px', borderRadius: '10px', color: '#0056b3', cursor: 'pointer' }}><Edit2 size={16} /></button>
                 <button onClick={() => handleDelete(member.id)} style={{ background: '#fff1f2', border: '1px solid #fee2e2', padding: '8px', borderRadius: '10px', color: '#ef4444', cursor: 'pointer' }}><Trash2 size={16} /></button>
               </div>
               
@@ -206,64 +217,88 @@ export default function TeamManagement() {
 
       {isModalOpen && (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(15, 23, 42, 0.7)', backdropFilter: 'blur(4px)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 2000, padding: '20px' }}>
-          <div className="animate-fade-in" style={{ backgroundColor: 'white', borderRadius: '24px', width: '100%', maxWidth: '600px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }}>
-            <div style={{ padding: '25px 30px', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h3 style={{ fontSize: '1.5rem', fontWeight: '900', color: '#1e293b', margin: 0 }}>{isEditing ? 'Edit Member' : 'Add Team Member'}</h3>
-              <button onClick={() => setIsModalOpen(false)} style={{ background: '#f1f5f9', border: 'none', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#64748b' }}><X size={20} /></button>
+          <div className="animate-fade-in" style={{ backgroundColor: 'white', borderRadius: '20px', width: '100%', maxWidth: '500px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', overflow: 'hidden' }}>
+            <div style={{ padding: '20px 25px', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: '900', color: '#1e293b', margin: 0 }}>{isEditing ? 'Edit Member' : 'Add Team Member'}</h3>
+              <button onClick={() => setIsModalOpen(false)} style={{ background: '#f1f5f9', border: 'none', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#64748b' }}><X size={18} /></button>
             </div>
 
-            <form onSubmit={handleSubmit} style={{ padding: '30px' }}>
-              <div style={{ marginBottom: '20px' }}>
-                <label style={{ fontSize: '0.8rem', fontWeight: '800', color: '#64748b', marginBottom: '8px', display: 'block' }}>FULL NAME</label>
+            <form onSubmit={handleSubmit} style={{ padding: '20px', maxHeight: '80vh', overflowY: 'auto' }}>
+              <div style={{ marginBottom: '15px' }}>
+                <label style={{ fontSize: '0.75rem', fontWeight: '800', color: '#64748b', marginBottom: '6px', display: 'block' }}>FULL NAME</label>
                 <div style={{ position: 'relative' }}>
-                  <User size={18} style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
-                  <input type="text" required value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} style={{ width: '100%', padding: '12px 15px 12px 45px', border: '1px solid #e2e8f0', borderRadius: '12px', fontSize: '1rem', outline: 'none', backgroundColor: '#f8fafc' }} placeholder="e.g. Dr. Ahmed Ali" />
+                  <User size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                  <input type="text" required value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} style={{ width: '100%', padding: '10px 12px 10px 38px', border: '1px solid #e2e8f0', borderRadius: '10px', fontSize: '0.9rem', outline: 'none', backgroundColor: '#f8fafc' }} placeholder="e.g. Dr. Ahmed Ali" />
+                </div>
+              </div>
+
+              <div style={{ marginBottom: '15px' }}>
+                <label style={{ fontSize: '0.75rem', fontWeight: '800', color: '#64748b', marginBottom: '6px', display: 'block' }}>ROLE / POSITION</label>
+                <div style={{ position: 'relative' }}>
+                  <Briefcase size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                  <input type="text" required value={formData.role} onChange={(e) => setFormData({...formData, role: e.target.value})} style={{ width: '100%', padding: '10px 12px 10px 38px', border: '1px solid #e2e8f0', borderRadius: '10px', fontSize: '0.9rem', outline: 'none', backgroundColor: '#f8fafc' }} placeholder="e.g. Executive Director" />
+                </div>
+              </div>
+
+              <div style={{ marginBottom: '15px' }}>
+                <label style={{ fontSize: '0.75rem', fontWeight: '800', color: '#64748b', marginBottom: '6px', display: 'block' }}>DISPLAY ORDER</label>
+                <div style={{ position: 'relative' }}>
+                  <Hash size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                  <input type="number" required value={formData.order_index} onChange={(e) => setFormData({...formData, order_index: parseInt(e.target.value)})} style={{ width: '100%', padding: '10px 12px 10px 38px', border: '1px solid #e2e8f0', borderRadius: '10px', fontSize: '0.9rem', outline: 'none', backgroundColor: '#f8fafc' }} />
+                </div>
+              </div>
+
+              <div style={{ marginBottom: '15px' }}>
+                <label style={{ fontSize: '0.75rem', fontWeight: '800', color: '#64748b', marginBottom: '6px', display: 'block' }}>FACEBOOK URL</label>
+                <div style={{ position: 'relative' }}>
+                  <Globe size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                  <input type="url" value={formData.facebook_url} onChange={(e) => setFormData({...formData, facebook_url: e.target.value})} style={{ width: '100%', padding: '10px 12px 10px 38px', border: '1px solid #e2e8f0', borderRadius: '10px', fontSize: '0.9rem', outline: 'none', backgroundColor: '#f8fafc' }} placeholder="https://facebook.com/..." />
+                </div>
+              </div>
+
+              <div style={{ marginBottom: '15px' }}>
+                <label style={{ fontSize: '0.75rem', fontWeight: '800', color: '#64748b', marginBottom: '6px', display: 'block' }}>WHATSAPP NUMBER</label>
+                <div style={{ position: 'relative' }}>
+                  <MessageCircle size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                  <input type="text" value={formData.whatsapp_no} onChange={(e) => setFormData({...formData, whatsapp_no: e.target.value})} style={{ width: '100%', padding: '10px 12px 10px 38px', border: '1px solid #e2e8f0', borderRadius: '10px', fontSize: '0.9rem', outline: 'none', backgroundColor: '#f8fafc' }} placeholder="e.g. 25263XXXXXXX" />
+                </div>
+              </div>
+
+              <div style={{ marginBottom: '15px' }}>
+                <label style={{ fontSize: '0.75rem', fontWeight: '800', color: '#64748b', marginBottom: '6px', display: 'block' }}>CONTACT EMAIL</label>
+                <div style={{ position: 'relative' }}>
+                  <Mail size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                  <input type="email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} style={{ width: '100%', padding: '10px 12px 10px 38px', border: '1px solid #e2e8f0', borderRadius: '10px', fontSize: '0.9rem', outline: 'none', backgroundColor: '#f8fafc' }} placeholder="email@wdo.org" />
                 </div>
               </div>
 
               <div style={{ marginBottom: '20px' }}>
-                <label style={{ fontSize: '0.8rem', fontWeight: '800', color: '#64748b', marginBottom: '8px', display: 'block' }}>ROLE / POSITION</label>
-                <div style={{ position: 'relative' }}>
-                  <Briefcase size={18} style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
-                  <input type="text" required value={formData.role} onChange={(e) => setFormData({...formData, role: e.target.value})} style={{ width: '100%', padding: '12px 15px 12px 45px', border: '1px solid #e2e8f0', borderRadius: '12px', fontSize: '1rem', outline: 'none', backgroundColor: '#f8fafc' }} placeholder="e.g. Executive Director" />
-                </div>
-              </div>
-
-              <div style={{ marginBottom: '20px' }}>
-                <label style={{ fontSize: '0.8rem', fontWeight: '800', color: '#64748b', marginBottom: '8px', display: 'block' }}>DISPLAY ORDER</label>
-                <div style={{ position: 'relative' }}>
-                  <Hash size={18} style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
-                  <input type="number" required value={formData.order_index} onChange={(e) => setFormData({...formData, order_index: parseInt(e.target.value)})} style={{ width: '100%', padding: '12px 15px 12px 45px', border: '1px solid #e2e8f0', borderRadius: '12px', fontSize: '1rem', outline: 'none', backgroundColor: '#f8fafc' }} />
-                </div>
-              </div>
-
-              <div style={{ marginBottom: '25px' }}>
-                <label style={{ fontSize: '0.8rem', fontWeight: '800', color: '#64748b', marginBottom: '8px', display: 'block' }}>PROFILE PICTURE</label>
-                <div style={{ border: '2px dashed #cbd5e1', borderRadius: '16px', padding: '20px', textAlign: 'center', backgroundColor: '#f8fafc', position: 'relative' }}>
+                <label style={{ fontSize: '0.75rem', fontWeight: '800', color: '#64748b', marginBottom: '6px', display: 'block' }}>PROFILE PICTURE</label>
+                <div style={{ border: '2px dashed #cbd5e1', borderRadius: '12px', padding: '15px', textAlign: 'center', backgroundColor: '#f8fafc', position: 'relative' }}>
                   {uploading ? (
-                    <Loader2 className="animate-spin mx-auto text-primary" size={24} />
+                    <Loader2 className="animate-spin mx-auto text-primary" size={20} />
                   ) : formData.image_url ? (
                     <div>
-                      <img src={formData.image_url} alt="Preview" style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', marginBottom: '10px' }} />
+                      <img src={formData.image_url} alt="Preview" style={{ width: '60px', height: '60px', borderRadius: '50%', objectFit: 'cover', marginBottom: '8px' }} />
                       <div style={{ position: 'relative' }}>
-                        <button type="button" style={{ padding: '6px 15px', backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '8px', fontWeight: '700', fontSize: '0.8rem', cursor: 'pointer' }}>Change</button>
+                        <button type="button" style={{ padding: '5px 12px', backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '8px', fontWeight: '700', fontSize: '0.75rem', cursor: 'pointer' }}>Change</button>
                         <input type="file" accept="image/*" onChange={handleImageUpload} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0, cursor: 'pointer' }} />
                       </div>
                     </div>
                   ) : (
                     <div style={{ position: 'relative' }}>
-                      <ImageIcon size={24} color="#94a3b8" style={{ marginBottom: '8px' }} />
-                      <p style={{ margin: 0, fontSize: '0.85rem', fontWeight: '800' }}>Click to upload</p>
+                      <ImageIcon size={20} color="#94a3b8" style={{ marginBottom: '5px' }} />
+                      <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: '800' }}>Click to upload</p>
                       <input type="file" accept="image/*" onChange={handleImageUpload} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0, cursor: 'pointer' }} />
                     </div>
                   )}
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '15px', justifyContent: 'flex-end' }}>
-                <button type="button" onClick={() => setIsModalOpen(false)} style={{ padding: '12px 20px', backgroundColor: '#f1f5f9', color: '#64748b', border: 'none', borderRadius: '12px', fontWeight: '800', cursor: 'pointer' }}>CANCEL</button>
-                <button type="submit" disabled={loading} style={{ padding: '12px 25px', backgroundColor: '#0056b3', color: 'white', border: 'none', borderRadius: '12px', fontWeight: '800', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  {loading ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />} {isEditing ? 'SAVE' : 'ADD MEMBER'}
+              <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', paddingTop: '10px' }}>
+                <button type="button" onClick={() => setIsModalOpen(false)} style={{ padding: '10px 15px', backgroundColor: '#f1f5f9', color: '#64748b', border: 'none', borderRadius: '10px', fontWeight: '800', fontSize: '0.85rem', cursor: 'pointer' }}>CANCEL</button>
+                <button type="submit" disabled={loading} style={{ padding: '10px 20px', backgroundColor: '#0056b3', color: 'white', border: 'none', borderRadius: '10px', fontWeight: '800', fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {loading ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />} {isEditing ? 'SAVE' : 'ADD'}
                 </button>
               </div>
             </form>

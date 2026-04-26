@@ -97,9 +97,9 @@ export default function Team() {
                 <p style={{ color: '#0056b3', fontSize: '0.8rem', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '15px' }}>{member.role}</p>
                 
                 <div style={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
-                   <a href="#" style={{ color: '#94a3b8' }}><Globe size={16} /></a>
-                   <a href="#" style={{ color: '#94a3b8' }}><MessageCircle size={16} /></a>
-                   <a href="#" style={{ color: '#94a3b8' }}><Mail size={16} /></a>
+                   <a href={member.email ? `https://mail.google.com/mail/?view=cm&fs=1&to=${member.email}` : `https://mail.google.com/mail/?view=cm&fs=1&to=waqaldv@gmail.com`} target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8' }} title="Gmail"><Mail size={16} /></a>
+                   <a href={member.facebook_url || '#'} target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8' }} title="Facebook"><Globe size={16} /></a>
+                   <a href={member.whatsapp_no ? `https://wa.me/${member.whatsapp_no.replace(/\D/g,'')}` : '#'} target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8' }} title="WhatsApp"><MessageCircle size={16} /></a>
                 </div>
               </div>
             ))}
