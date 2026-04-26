@@ -204,7 +204,7 @@ export default function Home() {
             <Link href="/news" style={{ color: '#0056b3', fontWeight: '800', display: 'flex', alignItems: 'center', gap: '5px' }}>View All News <ArrowRight size={20} /></Link>
           </div>
           <div className="grid grid-cols-1" style={{ gap: '20px' }}>
-            {posts.map((post) => (
+            {posts.slice(0, 1).map((post) => (
               <div key={post.id} className="flex-mobile-stack hover-scale" style={{ display: 'flex', gap: '25px', alignItems: 'center', borderBottom: '1px solid #f1f5f9', paddingBottom: '25px', padding: '15px', borderRadius: '16px' }}>
                 <div style={{ width: '120px', height: '120px', borderRadius: '16px', overflow: 'hidden', flexShrink: 0, backgroundColor: '#f8fafc' }}>
                   {post.image_url ? <img src={post.image_url} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#cbd5e1' }}><Calendar size={30} /></div>}
