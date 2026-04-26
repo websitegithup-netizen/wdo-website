@@ -12,6 +12,7 @@ export default function ClientLayout({ children }) {
 
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   const isAdmin = pathname.startsWith('/admin')
   const isLogin = pathname === '/login'
@@ -26,6 +27,7 @@ export default function ClientLayout({ children }) {
       setIsScrolled(window.scrollY > 20)
     }
 
+    setMounted(true)
     handleCheck()
     window.addEventListener('scroll', handleCheck)
     window.addEventListener('resize', handleCheck)
@@ -104,21 +106,21 @@ export default function ClientLayout({ children }) {
         </div>
       </div>
 
-      <header className="header" style={{
-        position: 'fixed',
-        top: isMobile ? '0' : (isScrolled ? '0' : '38px'),
+      <header className="header" style={{ 
+        position: 'fixed', 
+        top: isMobile || isScrolled ? '0' : '38px', 
         width: '100%',
-        zIndex: 1000,
-        backgroundColor: isMobile ? '#002654' : (isScrolled ? '#002654' : 'transparent'),
-        color: 'white',
-        boxShadow: isScrolled || isMobile ? '0 4px 15px rgba(0,0,0,0.2)' : 'none',
+        zIndex: 1000, 
+        backgroundColor: !mounted || isMobile || isScrolled || pathname !== '/' ? '#002654' : 'transparent', 
+        color: 'white', 
+        boxShadow: isScrolled || isMobile || pathname !== '/' ? '0 4px 15px rgba(0,0,0,0.2)' : 'none',
         transition: 'all 0.4s ease'
       }}>
-        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: isMobile ? '55px' : (isScrolled ? '60px' : '75px'), transition: 'all 0.4s ease' }}>
+        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: isMobile || isScrolled || pathname !== '/' ? '55px' : '75px', transition: 'all 0.4s ease' }}>
           <Link href="/" onClick={() => setIsMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-              <span style={{ fontSize: isMobile ? '0.9rem' : '1.4rem', fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1' }}><span style={{ borderBottom: isMobile ? '2px solid #ffc107' : '3px solid #ffc107' }}>WDO</span></span>
-              <span style={{ fontSize: isMobile ? '0.9rem' : '1.4rem', fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1.4' }}>SOMALILAND</span>
+              <span style={{ fontSize: isMobile || isScrolled || pathname !== '/' ? '0.95rem' : '1.4rem', fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1' }}><span style={{ borderBottom: isMobile || isScrolled || pathname !== '/' ? '2px solid #ffc107' : '3px solid #ffc107' }}>WDO</span></span>
+              <span style={{ fontSize: isMobile || isScrolled || pathname !== '/' ? '0.95rem' : '1.4rem', fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1.4' }}>SOMALILAND</span>
             </div>
           </Link>
 
@@ -276,7 +278,10 @@ export default function ClientLayout({ children }) {
         </div>
       )}
 
-      <main className="main-content">
+      <main className="main-content" style={{ 
+        paddingTop: pathname === '/' ? '0' : (isMobile ? '55px' : '115px'),
+        minHeight: '80vh'
+      }}>
         {children}
       </main>
 
@@ -312,7 +317,7 @@ export default function ClientLayout({ children }) {
             onClick={scrollToTop}
             className="animate-fade-in"
             style={{
-              backgroundColor: '#0056b3',
+              backgroundColor: '#002654',
               color: 'white',
               width: '40px',
               height: '40px',
@@ -347,20 +352,21 @@ export default function ClientLayout({ children }) {
             <div>
               <h4 style={{ color: 'white', marginBottom: '20px' }}>Quick Links</h4>
               <ul style={{ listStyle: 'none', padding: 0 }}>
-                {navLinks.map(link => {
-                  if (link.dropdown) {
-                    return link.dropdown.map(subItem => (
-                      <li key={subItem.name} style={{ marginBottom: '10px' }}>
-                        <Link href={subItem.href} style={{ color: '#ccc', fontSize: '0.9rem' }}>{subItem.name}</Link>
+                {navLinks.map(link => (
+                  <React.Fragment key={link.name}>
+                    {link.dropdown ? (
+                      link.dropdown.map(subItem => (
+                        <li key={subItem.name} style={{ marginBottom: '10px' }}>
+                          <Link href={subItem.href} style={{ color: '#ccc', fontSize: '0.9rem' }}>{subItem.name}</Link>
+                        </li>
+                      ))
+                    ) : (
+                      <li style={{ marginBottom: '10px' }}>
+                        <Link href={link.href} style={{ color: '#ccc', fontSize: '0.9rem' }}>{link.name}</Link>
                       </li>
-                    ))
-                  }
-                  return (
-                    <li key={link.name} style={{ marginBottom: '10px' }}>
-                      <Link href={link.href} style={{ color: '#ccc', fontSize: '0.9rem' }}>{link.name}</Link>
-                    </li>
-                  )
-                })}
+                    )}
+                  </React.Fragment>
+                ))}
               </ul>
             </div>
             <div>

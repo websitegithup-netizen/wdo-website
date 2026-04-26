@@ -11,6 +11,7 @@ export default function Home() {
   const [dbSlides, setDbSlides] = useState([])
   const [loading, setLoading] = useState(true)
   const [isMobile, setIsMobile] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   // Default fallback slides ONLY if database is empty
   const defaultSlides = [
@@ -24,9 +25,12 @@ export default function Home() {
   const activeSlides = dbSlides.length > 0 ? dbSlides : defaultSlides
 
   useEffect(() => {
+    setMounted(true)
+    const handleResize = () => setIsMobile(window.innerWidth <= 768)
+    handleResize()
+    
     const fetchData = async () => {
       try {
-        setIsMobile(window.innerWidth <= 768)
         const { data: slidesData } = await supabase.from('hero_slides').select('*').order('order_index', { ascending: true })
         if (slidesData && slidesData.length > 0) setDbSlides(slidesData)
 
@@ -40,8 +44,8 @@ export default function Home() {
     }
 
     fetchData()
-    window.addEventListener('resize', () => setIsMobile(window.innerWidth <= 768))
-    return () => window.removeEventListener('resize', () => setIsMobile(window.innerWidth <= 768))
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   useEffect(() => {
