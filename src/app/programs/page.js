@@ -3,8 +3,13 @@ import Link from 'next/link'
 import { ArrowRight, BookOpen, HeartPulse, TreePine, Users, ChevronRight, GraduationCap, Stethoscope, Briefcase, Leaf } from 'lucide-react'
 
 export const metadata = {
-  title: 'Our Programs | WDO',
-  description: 'Explore the programs and initiatives by Waqal Development Organization.',
+  title: 'Our Programs | Education, Health & Sustainable Development in Somaliland',
+  description: 'Explore WDO\'s core programs in Somaliland: Improving education access, healthcare services, youth skills development, and environmental sustainability.',
+  openGraph: {
+    title: 'WDO Programs & Initiatives',
+    description: 'Empowering Somaliland communities through targeted social and environmental programs.',
+    images: ['https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069'],
+  },
 }
 
 export const dynamic = 'force-dynamic'

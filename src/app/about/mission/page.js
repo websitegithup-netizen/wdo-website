@@ -2,8 +2,13 @@ import React from 'react'
 import { Target, Eye, ShieldCheck, Award, Zap, ArrowRight, Heart } from 'lucide-react'
 
 export const metadata = {
-  title: 'Mission & Vision | Premium NGO Design',
-  description: 'High-impact mission and vision section for Waqal Development Organization.',
+  title: 'Mission, Vision & Values | Waqal Development Organization (WDO)',
+  description: 'Learn about WDO\'s mission to provide quality services and educational opportunities in Somaliland, and our vision for a resilient and prosperous society.',
+  openGraph: {
+    title: 'WDO Mission & Vision',
+    description: 'Empowering Somaliland through education, health, and sustainable development.',
+    images: ['https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070'],
+  },
 }
 
 export default function MissionVision() {
