@@ -121,7 +121,7 @@ export default function AdminGallery() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+      <div className="responsive-flex" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', gap: '15px' }}>
         <h2 style={{ fontSize: '1.5rem', fontWeight: '800', margin: 0 }}>GALLERY MANAGEMENT</h2>
         {(userRole === 'Super Admin' || userRole === 'Editor') && (
           <button 
@@ -141,7 +141,7 @@ export default function AdminGallery() {
             {editingId ? 'EDIT PHOTO' : 'ADD NEW PHOTO'}
           </h3>
           <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-2" style={{ gap: '20px', marginBottom: '20px' }}>
+            <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
               <div>
                 <label style={{ fontSize: '0.75rem', fontWeight: '700', marginBottom: '8px', display: 'block' }}>ALBUM / FOLDER NAME</label>
                 <input 
@@ -191,8 +191,8 @@ export default function AdminGallery() {
         </div>
       )}
 
-      <div style={{ backgroundColor: 'white', border: '1px solid #ddd', overflow: 'hidden' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+      <div style={{ backgroundColor: 'white', border: '1px solid #ddd', overflowX: 'auto' }}>
+        <table style={{ width: '100%', minWidth: '600px', borderCollapse: 'collapse', textAlign: 'left' }}>
           <thead>
             <tr style={{ borderBottom: '1px solid #ddd', backgroundColor: '#f9f9f9' }}>
               <th style={{ padding: '15px 20px', fontSize: '0.75rem', fontWeight: '800' }}>PREVIEW</th>

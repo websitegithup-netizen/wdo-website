@@ -8,6 +8,9 @@ import Link from 'next/link'
 export default function NewsClient() {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
+  const [email, setEmail] = useState('')
+  const [subscribing, setSubscribing] = useState(false)
+  const [status, setStatus] = useState(null)
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -22,6 +25,31 @@ export default function NewsClient() {
     }
     fetchPosts()
   }, [])
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault()
+    if (!email) return
+
+    setSubscribing(true)
+    setStatus(null)
+
+    const { error } = await supabase
+      .from('subscriptions')
+      .insert([{ email }])
+
+    if (error) {
+      if (error.code === '23505') {
+        setStatus({ type: 'success', text: 'You are already subscribed!' })
+      } else {
+        setStatus({ type: 'error', text: 'Something went wrong. Please try again.' })
+      }
+    } else {
+      setStatus({ type: 'success', text: 'Thank you for subscribing!' })
+      setEmail('')
+    }
+    setSubscribing(false)
+    setTimeout(() => setStatus(null), 5000)
+  }
 
   return (
     <main style={{ backgroundColor: '#fff', minHeight: '100vh' }}>
@@ -132,10 +160,47 @@ export default function NewsClient() {
          <div style={{ maxWidth: '500px', margin: '0 auto' }}>
             <h3 style={{ fontSize: '1.3rem', fontWeight: '900', marginBottom: '10px' }}>Stay Connected</h3>
             <p style={{ color: '#64748b', marginBottom: '20px', fontSize: '0.85rem' }}>Get the latest WDO stories and impact reports.</p>
-            <div className="newsletter-form" style={{ display: 'flex', gap: '8px' }}>
-               <input type="email" placeholder="Email address" style={{ flex: 1, padding: '10px', borderRadius: '8px', border: '1px solid #e2e8f0', outline: 'none', fontSize: '0.9rem' }} />
-               <button style={{ padding: '10px 20px', backgroundColor: '#002654', color: 'white', border: 'none', borderRadius: '8px', fontWeight: '800', cursor: 'pointer', fontSize: '0.8rem' }}>SUBSCRIBE</button>
-            </div>
+            {status && (
+              <div style={{ 
+                padding: '10px', 
+                borderRadius: '8px', 
+                marginBottom: '15px', 
+                fontSize: '0.85rem', 
+                fontWeight: '700',
+                backgroundColor: status.type === 'success' ? '#f0fdf4' : '#fef2f2',
+                color: status.type === 'success' ? '#16a34a' : '#dc2626',
+                border: `1px solid ${status.type === 'success' ? '#bbf7d0' : '#fecaca'}`
+              }}>
+                {status.text}
+              </div>
+            )}
+            <form onSubmit={handleSubscribe} className="newsletter-form" style={{ display: 'flex', gap: '8px' }}>
+               <input 
+                 type="email" 
+                 required
+                 placeholder="Email address" 
+                 value={email}
+                 onChange={(e) => setEmail(e.target.value)}
+                 style={{ flex: 1, padding: '10px', borderRadius: '8px', border: '1px solid #e2e8f0', outline: 'none', fontSize: '0.9rem' }} 
+               />
+               <button 
+                 type="submit"
+                 disabled={subscribing}
+                 style={{ 
+                   padding: '10px 20px', 
+                   backgroundColor: '#002654', 
+                   color: 'white', 
+                   border: 'none', 
+                   borderRadius: '8px', 
+                   fontWeight: '800', 
+                   cursor: subscribing ? 'not-allowed' : 'pointer', 
+                   fontSize: '0.8rem',
+                   opacity: subscribing ? 0.7 : 1
+                 }}
+               >
+                 {subscribing ? '...' : 'SUBSCRIBE'}
+               </button>
+            </form>
          </div>
       </section>
 

@@ -12,6 +12,9 @@ export default function HomeClient() {
   const [loading, setLoading] = useState(true)
   const [isMobile, setIsMobile] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [email, setEmail] = useState('')
+  const [subscribing, setSubscribing] = useState(false)
+  const [status, setStatus] = useState(null)
 
   const defaultSlides = [
     {
@@ -46,6 +49,31 @@ export default function HomeClient() {
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault()
+    if (!email) return
+
+    setSubscribing(true)
+    setStatus(null)
+
+    const { error } = await supabase
+      .from('subscriptions')
+      .insert([{ email }])
+
+    if (error) {
+      if (error.code === '23505') {
+        setStatus({ type: 'success', text: 'You are already subscribed!' })
+      } else {
+        setStatus({ type: 'error', text: 'Something went wrong. Please try again.' })
+      }
+    } else {
+      setStatus({ type: 'success', text: 'Thank you for subscribing!' })
+      setEmail('')
+    }
+    setSubscribing(false)
+    setTimeout(() => setStatus(null), 5000)
+  }
 
   useEffect(() => {
     if (activeSlides.length > 1) {
@@ -218,6 +246,55 @@ export default function HomeClient() {
             ))}
           </div>
         </div>
+      </section>
+
+      {/* Newsletter Signup */}
+      <section style={{ backgroundColor: '#f8fafc', padding: '60px 20px', textAlign: 'center', borderTop: '1px solid #e2e8f0' }}>
+         <div style={{ maxWidth: '500px', margin: '0 auto' }}>
+            <h3 style={{ fontSize: '1.5rem', fontWeight: '900', marginBottom: '10px' }}>Stay Connected</h3>
+            <p style={{ color: '#64748b', marginBottom: '25px', fontSize: '1rem' }}>Get the latest WDO stories and impact reports.</p>
+            {status && (
+              <div style={{ 
+                padding: '12px', 
+                borderRadius: '8px', 
+                marginBottom: '20px', 
+                fontSize: '0.9rem', 
+                fontWeight: '700',
+                backgroundColor: status.type === 'success' ? '#f0fdf4' : '#fef2f2',
+                color: status.type === 'success' ? '#16a34a' : '#dc2626',
+                border: `1px solid ${status.type === 'success' ? '#bbf7d0' : '#fecaca'}`
+              }}>
+                {status.text}
+              </div>
+            )}
+            <form onSubmit={handleSubscribe} style={{ display: 'flex', gap: '10px' }}>
+               <input 
+                 type="email" 
+                 required
+                 placeholder="Email address" 
+                 value={email}
+                 onChange={(e) => setEmail(e.target.value)}
+                 style={{ flex: 1, padding: '12px 15px', borderRadius: '8px', border: '1px solid #e2e8f0', outline: 'none', fontSize: '1rem' }} 
+               />
+               <button 
+                 type="submit"
+                 disabled={subscribing}
+                 style={{ 
+                   padding: '12px 25px', 
+                   backgroundColor: '#002654', 
+                   color: 'white', 
+                   border: 'none', 
+                   borderRadius: '8px', 
+                   fontWeight: '900', 
+                   cursor: subscribing ? 'not-allowed' : 'pointer', 
+                   fontSize: '0.9rem',
+                   opacity: subscribing ? 0.8 : 1
+                 }}
+               >
+                 {subscribing ? '...' : 'SUBSCRIBE'}
+               </button>
+            </form>
+         </div>
       </section>
 
       {/* CTA Section */}

@@ -185,7 +185,7 @@ export default function BlogManagement() {
     <div className="animate-fade-in" style={{ maxWidth: '1200px', margin: '0 auto' }}>
       
       {/* Pro Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+      <div className="responsive-flex" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', gap: '15px' }}>
         <div>
           <h2 style={{ fontSize: '1.8rem', fontWeight: '900', color: '#1e293b', margin: 0 }}>Content Management</h2>
           <p style={{ fontSize: '0.9rem', color: '#64748b', marginTop: '5px' }}>Manage blog posts, filter content, and perform bulk actions.</p>
@@ -246,8 +246,9 @@ export default function BlogManagement() {
       </div>
 
       {/* Pro Data Table */}
-      <div style={{ backgroundColor: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.02)' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '50px 80px 2fr 1fr 1fr 100px', padding: '15px 20px', backgroundColor: '#f8fafc', borderBottom: '1px solid #e2e8f0', fontWeight: '800', fontSize: '0.8rem', color: '#64748b', textTransform: 'uppercase' }}>
+      <div style={{ backgroundColor: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', overflowX: 'auto', boxShadow: '0 4px 15px rgba(0,0,0,0.02)' }}>
+        <div style={{ minWidth: '900px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '50px 80px 2fr 1fr 1fr 100px', padding: '15px 20px', backgroundColor: '#f8fafc', borderBottom: '1px solid #e2e8f0', fontWeight: '800', fontSize: '0.8rem', color: '#64748b', textTransform: 'uppercase' }}>
           <div style={{ cursor: 'pointer' }} onClick={toggleSelectAll}>
             {selectedPosts.length === filteredPosts.length && filteredPosts.length > 0 ? <CheckSquare size={18} color="#0056b3" /> : <Square size={18} />}
           </div>
@@ -302,6 +303,7 @@ export default function BlogManagement() {
             </div>
           ))
         )}
+      </div>
       </div>
 
       {/* Editor Modal */}

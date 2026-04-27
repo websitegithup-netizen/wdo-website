@@ -20,30 +20,59 @@ export default function AdminLayout({ children }) {
   const [unreadCount, setUnreadCount] = useState(0)
   const [theme, setTheme] = useState('light')
   const [language, setLanguage] = useState('en')
-  const [currentUser, setCurrentUser] = useState({ name: 'Admin', email: 'user@wdo.org', role: 'Viewer' })
+  const [currentUser, setCurrentUser] = useState({ name: 'Admin', email: 'user@wdo.org', role: 'Viewer', avatar_url: null })
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkScreen = () => setIsMobile(window.innerWidth < 1024)
+    checkScreen()
+    window.addEventListener('resize', checkScreen)
+    return () => window.removeEventListener('resize', checkScreen)
+  }, [])
 
   // 1. Initial Sync & Auth Check
   useEffect(() => {
     const syncSystem = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
-        // Fetch real name and role from profiles
+        // Fetch real name, role, recent_sessions, and avatar_url from profiles
         const { data: profile } = await supabase
           .from('profiles')
-          .select('name, role')
+          .select('name, role, recent_sessions, avatar_url')
           .eq('id', user.id)
           .single()
           
         setCurrentUser({
           name: profile?.name || user.user_metadata?.name || 'Admin User',
           email: user.email,
-          role: profile?.role || 'Viewer'
+          role: profile?.role || 'Viewer',
+          avatar_url: profile?.avatar_url || user.user_metadata?.avatar_url || null
         })
 
-        // Immediate login update
+        // Immediate login update & Session tracking
+        const userAgent = window.navigator.userAgent
+        const deviceName = /Macintosh/.test(userAgent) ? 'Mac' : /Windows/.test(userAgent) ? 'Windows PC' : /iPhone/.test(userAgent) ? 'iPhone' : /Android/.test(userAgent) ? 'Android' : 'Device'
+        const browserName = /Chrome/.test(userAgent) && !/Edge/.test(userAgent) ? 'Chrome' : /Safari/.test(userAgent) && !/Chrome/.test(userAgent) ? 'Safari' : /Firefox/.test(userAgent) ? 'Firefox' : /Edge/.test(userAgent) ? 'Edge' : 'Browser'
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown Location'
+        
+        const currentSession = {
+          device: `${deviceName} - ${browserName}`,
+          location: timezone,
+          time: new Date().toISOString()
+        }
+
+        let sessions = profile?.recent_sessions || []
+        // Filter out identical sessions (same device and location) to prevent duplicates
+        sessions = sessions.filter(s => s.device !== currentSession.device || s.location !== currentSession.location)
+        sessions.unshift(currentSession) // Add to top
+        if (sessions.length > 3) sessions.pop() // Keep only last 3
+
         await supabase
           .from('profiles')
-          .update({ last_login: new Date().toISOString() })
+          .update({ 
+            last_login: new Date().toISOString(),
+            recent_sessions: sessions
+          })
           .eq('id', user.id)
 
         if (user.user_metadata) {
@@ -61,6 +90,9 @@ export default function AdminLayout({ children }) {
       setLoading(false)
     }
     syncSystem()
+
+    window.addEventListener('profileUpdated', syncSystem)
+    return () => window.removeEventListener('profileUpdated', syncSystem)
   }, [pathname, router])
 
   // 2. Real-time Heartbeat (Updates last_login every 2 mins)
@@ -101,6 +133,7 @@ export default function AdminLayout({ children }) {
       system: 'SYSTEM & ADMIN',
       users: 'User Roles & Access',
       settings: 'System Settings',
+      subscriptions: 'Newsletter Subscriptions',
       profile: 'My Profile',
       logout: 'Sign Out',
       portal: 'WDO Workspace',
@@ -131,16 +164,16 @@ export default function AdminLayout({ children }) {
       title: t.audience,
       items: [
         { name: t.impact, icon: <BarChart3 size={18} />, path: '/admin/impact' },
-        { name: t.inbox, icon: <MessageSquare size={18} />, path: '/admin/messages', badge: unreadCount }
+        { name: t.inbox, icon: <MessageSquare size={18} />, path: '/admin/messages', badge: unreadCount },
+        { name: t.subscriptions, icon: <Bell size={18} />, path: '/admin/subscriptions' }
       ]
     },
     {
       title: t.system,
       items: [
-        { name: t.profile, icon: <User size={18} />, path: '/admin/profile' },
+        { name: t.settings, icon: <Settings size={18} />, path: '/admin/settings' },
         ...(currentUser.role === 'Super Admin' ? [
-          { name: t.users, icon: <Users size={18} />, path: '/admin/users' },
-          { name: t.settings, icon: <Settings size={18} />, path: '/admin/settings' }
+          { name: t.users, icon: <Users size={18} />, path: '/admin/users' }
         ] : [])
       ]
     }
@@ -193,6 +226,7 @@ export default function AdminLayout({ children }) {
                 <Link 
                   key={item.name} 
                   href={item.path}
+                  onClick={() => { if (isMobile) setIsSidebarOpen(false) }}
                   style={{ 
                     display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 15px',
                     borderRadius: '12px', textDecoration: 'none', color: pathname === item.path ? '#0056b3' : '#64748b',
@@ -215,8 +249,12 @@ export default function AdminLayout({ children }) {
         {/* Sidebar Footer (User Info) */}
         <div style={{ padding: '20px', borderTop: '1px solid #f1f5f9', backgroundColor: '#fcfcfc' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '15px' }}>
-            <div style={{ width: '40px', height: '40px', borderRadius: '12px', backgroundColor: '#0056b3', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', fontSize: '1rem', boxShadow: '0 4px 10px rgba(0,86,179,0.2)' }}>
-              {currentUser.name.charAt(0).toUpperCase()}
+            <div style={{ width: '40px', height: '40px', borderRadius: '12px', backgroundColor: '#0056b3', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', fontSize: '1rem', boxShadow: '0 4px 10px rgba(0,86,179,0.2)', overflow: 'hidden', flexShrink: 0 }}>
+              {currentUser.avatar_url ? (
+                <img src={currentUser.avatar_url} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              ) : (
+                currentUser.name.charAt(0).toUpperCase()
+              )}
             </div>
             <div style={{ overflow: 'hidden' }}>
               <div style={{ fontWeight: '800', fontSize: '0.85rem', color: '#1e293b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{currentUser.name}</div>
@@ -232,19 +270,28 @@ export default function AdminLayout({ children }) {
         </div>
       </aside>
 
+      {/* Mobile Sidebar Overlay */}
+      {isMobile && isSidebarOpen && (
+        <div 
+          onClick={() => setIsSidebarOpen(false)}
+          style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(15, 23, 42, 0.6)', zIndex: 999, backdropFilter: 'blur(2px)' }}
+        />
+      )}
+
       {/* Main Content Area */}
       <main style={{ 
         flex: 1, 
-        marginLeft: isSidebarOpen ? '280px' : '0',
+        marginLeft: (isSidebarOpen && !isMobile) ? '280px' : '0',
         transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         minHeight: '100vh',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        width: isMobile ? '100%' : 'auto'
       }}>
         {/* Top Header */}
         <header style={{ 
           height: '70px', backgroundColor: 'white', borderBottom: '1px solid #e2e8f0', 
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 30px',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: isMobile ? '0 15px' : '0 30px',
           position: 'sticky', top: 0, zIndex: 900
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
@@ -270,9 +317,13 @@ export default function AdminLayout({ children }) {
               <button style={{ background: '#f8fafc', border: '1px solid #e2e8f0', padding: '8px', borderRadius: '10px', color: '#64748b', cursor: 'pointer' }}><Globe size={20} /></button>
             </div>
             <div style={{ width: '1px', height: '25px', backgroundColor: '#e2e8f0', margin: '0 5px' }}></div>
-            <Link href="/admin/profile" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-              <div style={{ width: '35px', height: '35px', borderRadius: '10px', backgroundColor: '#eff6ff', color: '#0056b3', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', fontSize: '0.9rem' }}>
-                {currentUser.name.charAt(0).toUpperCase()}
+            <Link href="/admin/settings" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
+              <div style={{ width: '35px', height: '35px', borderRadius: '10px', backgroundColor: '#eff6ff', color: '#0056b3', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', fontSize: '0.9rem', overflow: 'hidden', flexShrink: 0 }}>
+                {currentUser.avatar_url ? (
+                  <img src={currentUser.avatar_url} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  currentUser.name.charAt(0).toUpperCase()
+                )}
               </div>
               <div className="hidden-mobile" style={{ textAlign: 'left' }}>
                 <div style={{ fontWeight: '800', fontSize: '0.8rem', color: '#1e293b', lineHeight: '1' }}>{currentUser.name}</div>
@@ -283,12 +334,12 @@ export default function AdminLayout({ children }) {
         </header>
 
         {/* Content Wrapper */}
-        <div style={{ padding: '40px', flex: 1 }}>
+        <div style={{ padding: isMobile ? '20px 15px' : '40px', flex: 1, overflowX: 'hidden' }}>
           {children}
         </div>
 
         {/* Footer */}
-        <footer style={{ padding: '20px 40px', borderTop: '1px solid #e2e8f0', backgroundColor: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <footer style={{ padding: isMobile ? '15px' : '20px 40px', borderTop: '1px solid #e2e8f0', backgroundColor: 'white', display: 'flex', flexDirection: isMobile ? 'column' : 'row', justifyContent: 'space-between', alignItems: isMobile ? 'flex-start' : 'center', gap: '10px' }}>
           <div style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: '700' }}>
             © {new Date().getFullYear()} WDO Administration. All rights reserved.
           </div>
@@ -307,9 +358,27 @@ export default function AdminLayout({ children }) {
         }
         .animate-fade-in { animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
           .hidden-mobile { display: none !important; }
-          .admin-root aside { position: fixed; left: 0; top: 0; }
+          .admin-root aside { transform: translateX(0); }
+          .admin-root aside[style*="width: 0"] { transform: translateX(-280px); width: 280px !important; }
+          .responsive-grid { grid-template-columns: 1fr !important; }
+          .responsive-flex { flex-direction: column !important; align-items: flex-start !important; width: 100% !important; }
+          
+          /* Make all cards and large gaps smaller on mobile */
+          div[style*="padding: 40px"], div[style*="padding: 30px"], div[style*="padding: 25px"], div[style*="padding: 20px"],
+          div[style*="padding:40px"], div[style*="padding:30px"], div[style*="padding:25px"], div[style*="padding:20px"] {
+            padding: 15px !important;
+          }
+          div[style*="gap: 40px"], div[style*="gap: 30px"], div[style*="gap: 25px"], div[style*="gap: 20px"],
+          div[style*="gap:40px"], div[style*="gap:30px"], div[style*="gap:25px"], div[style*="gap:20px"] {
+            gap: 12px !important;
+          }
+          h2[style*="fontSize: 1.8rem"], h2[style*="fontSize: 1.75rem"],
+          h2[style*="font-size: 1.8rem"], h2[style*="font-size: 1.75rem"],
+          h2[style*="font-size:1.8rem"], h2[style*="font-size:1.75rem"] {
+            font-size: 1.4rem !important;
+          }
         }
       `}} />
     </div>

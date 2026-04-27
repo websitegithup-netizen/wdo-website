@@ -139,7 +139,7 @@ export default function TeamManagement() {
   return (
     <div className="animate-fade-in" style={{ maxWidth: '1200px', margin: '0 auto' }}>
       
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+      <div className="responsive-flex" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', gap: '15px' }}>
         <div>
           <h2 style={{ fontSize: '1.8rem', fontWeight: '900', color: '#1e293b', margin: 0 }}>Team Management</h2>
           <p style={{ fontSize: '0.9rem', color: '#64748b', marginTop: '5px' }}>Manage organizational leadership and staff members.</p>

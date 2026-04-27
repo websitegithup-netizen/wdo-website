@@ -38,6 +38,12 @@ body {
   font-size: 0.95rem; /* Reduced base font size */
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+* {
+  min-width: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {

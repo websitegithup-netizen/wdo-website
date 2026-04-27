@@ -218,7 +218,7 @@ export default function AdminSlider() {
   }
 
   return (
-    <div style={{ padding: '40px', maxWidth: '1200px', margin: '0 auto' }}>
+    <div className="responsive-flex" style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
       <header style={{ marginBottom: '40px' }}>
         <h1 style={{ fontSize: '2rem', fontWeight: '900', color: '#1e293b', marginBottom: '10px' }}>Slider Management</h1>
         <p style={{ color: '#64748b' }}>Design and manage the premium hero slider for the homepage.</p>
@@ -236,7 +236,7 @@ export default function AdminSlider() {
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '40px' }}>
+      <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '40px' }}>
         
         {/* Add New Slide Form - Hidden for Viewers */}
         {(userRole === 'Super Admin' || userRole === 'Editor') && (

@@ -166,7 +166,7 @@ export default function UserManagement() {
     <div className="animate-fade-in" style={{ maxWidth: '1200px', margin: '0 auto' }}>
       
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+      <div className="responsive-flex" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', gap: '15px' }}>
         <div>
           <h2 style={{ fontSize: '1.8rem', fontWeight: '900', color: '#1e293b', margin: 0, display: 'flex', alignItems: 'center', gap: '12px' }}>
             <Users size={28} color="#0056b3" /> User Roles & Access
@@ -193,7 +193,7 @@ export default function UserManagement() {
       )}
 
       {/* Analytics Summary */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', marginBottom: '30px' }}>
+      <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', marginBottom: '30px' }}>
         <div style={{ padding: '20px', backgroundColor: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '15px' }}>
           <div style={{ backgroundColor: '#eff6ff', padding: '12px', borderRadius: '12px', color: '#0056b3' }}><Users size={24} /></div>
           <div>
@@ -252,8 +252,9 @@ export default function UserManagement() {
       </div>
 
       {/* RBAC Data Table */}
-      <div style={{ backgroundColor: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', overflow: 'hidden' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr 1fr 1fr 1fr 80px', padding: '15px 20px', backgroundColor: '#f8fafc', borderBottom: '1px solid #e2e8f0', fontWeight: '800', fontSize: '0.8rem', color: '#64748b', textTransform: 'uppercase' }}>
+      <div style={{ backgroundColor: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', overflowX: 'auto' }}>
+        <div style={{ minWidth: '1000px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr 1fr 1fr 1fr 80px', padding: '15px 20px', backgroundColor: '#f8fafc', borderBottom: '1px solid #e2e8f0', fontWeight: '800', fontSize: '0.8rem', color: '#64748b', textTransform: 'uppercase' }}>
           <div>User Identity</div>
           <div>Email Contact</div>
           <div>System Role</div>
@@ -324,6 +325,7 @@ export default function UserManagement() {
             </div>
           ))
         )}
+        </div>
       </div>
 
       {/* Add/Edit User Modal */}

@@ -156,7 +156,7 @@ export default function ProgramsManagement() {
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
       
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+      <div className="responsive-flex" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', gap: '15px' }}>
         <div>
           <h2 style={{ fontSize: '1.75rem', fontWeight: '900', color: '#1a1a1a', margin: 0 }}>PROGRAMS MANAGEMENT</h2>
           <p style={{ fontSize: '0.85rem', color: '#666' }}>Design and manage WDO initiatives.</p>
@@ -187,7 +187,7 @@ export default function ProgramsManagement() {
           <div style={{ textAlign: 'center', padding: '50px' }}><Loader2 className="animate-spin mx-auto text-primary" size={40} /></div>
         ) : (
           programs.map(program => (
-            <div key={program.id} style={{ backgroundColor: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', padding: '15px', display: 'flex', alignItems: 'center', gap: '20px', transition: 'all 0.2s' }}>
+            <div key={program.id} className="responsive-flex" style={{ backgroundColor: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', padding: '15px', display: 'flex', alignItems: 'center', gap: '20px', transition: 'all 0.2s' }}>
               {/* Small Thumbnail */}
               <div style={{ width: '100px', height: '70px', borderRadius: '10px', backgroundColor: '#f1f5f9', overflow: 'hidden', flexShrink: 0 }}>
                 {program.image_url ? (
@@ -198,20 +198,20 @@ export default function ProgramsManagement() {
               </div>
 
               {/* Program Info */}
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
-                  <h3 style={{ fontSize: '1rem', fontWeight: '800', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{program.title}</h3>
+              <div style={{ flex: 1, minWidth: 0, width: '100%' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px', flexWrap: 'wrap' }}>
+                  <h3 style={{ fontSize: '1rem', fontWeight: '800', margin: 0, wordBreak: 'break-word' }}>{program.title}</h3>
                   <span style={{ fontSize: '0.65rem', padding: '2px 8px', backgroundColor: '#eff6ff', color: '#0056b3', borderRadius: '99px', fontWeight: '800', textTransform: 'uppercase' }}>
                     {program.category}
                   </span>
                 </div>
-                <p style={{ fontSize: '0.8rem', color: '#64748b', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <p style={{ fontSize: '0.8rem', color: '#64748b', margin: 0, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                   {program.description}
                 </p>
               </div>
 
               {/* Status & Actions */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '25px', flexShrink: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '25px', flexShrink: 0, width: '100%', maxWidth: '200px' }}>
                 <span style={{ fontSize: '0.7rem', color: program.status === 'published' ? '#059669' : '#e11d48', fontWeight: '800', display: 'flex', alignItems: 'center', gap: '5px' }}>
                   <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: program.status === 'published' ? '#059669' : '#e11d48' }}></div>
                   {program.status.toUpperCase()}
