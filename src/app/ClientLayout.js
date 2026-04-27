@@ -196,6 +196,7 @@ export default function ClientLayout({ children }) {
             backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 1999,
             backdropFilter: 'blur(4px)',
             transition: 'opacity 0.3s ease'
+
           }}
         />
       )}
@@ -270,21 +271,21 @@ export default function ClientLayout({ children }) {
                   </Link>
                   {link.dropdown && (
                     <div id={`mobile-icon-${link.name}`} onClick={(e) => {
-                        e.preventDefault();
-                        const el = document.getElementById(`mobile-drop-${link.name}`);
-                        const icon = document.getElementById(`mobile-icon-${link.name}`);
-                        if (el.style.maxHeight === '0px' || !el.style.maxHeight) {
-                          el.style.maxHeight = '500px';
-                          el.style.opacity = '1';
-                          el.style.marginTop = '8px';
-                          icon.style.transform = 'rotate(180deg)';
-                        } else {
-                          el.style.maxHeight = '0px';
-                          el.style.opacity = '0';
-                          el.style.marginTop = '0px';
-                          icon.style.transform = 'rotate(0deg)';
-                        }
-                      }}
+                      e.preventDefault();
+                      const el = document.getElementById(`mobile-drop-${link.name}`);
+                      const icon = document.getElementById(`mobile-icon-${link.name}`);
+                      if (el.style.maxHeight === '0px' || !el.style.maxHeight) {
+                        el.style.maxHeight = '500px';
+                        el.style.opacity = '1';
+                        el.style.marginTop = '8px';
+                        icon.style.transform = 'rotate(180deg)';
+                      } else {
+                        el.style.maxHeight = '0px';
+                        el.style.opacity = '0';
+                        el.style.marginTop = '0px';
+                        icon.style.transform = 'rotate(0deg)';
+                      }
+                    }}
                       style={{ cursor: 'pointer', transition: 'transform 0.3s', color: '#94a3b8', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', borderRadius: '50%' }}>
                       <ChevronDown size={16} />
                     </div>
