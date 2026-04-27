@@ -187,41 +187,52 @@ export default function ClientLayout({ children }) {
         />
       )}
 
-      {/* Side Drawer Navigation */}
+      {/* Mobile Drawer Overlay */}
+      {isMenuOpen && (
+        <div
+          onClick={() => setIsMenuOpen(false)}
+          style={{
+            position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh',
+            backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 1999,
+            backdropFilter: 'blur(4px)',
+            transition: 'opacity 0.3s ease'
+          }}
+        />
+      )}
+
+      {/* Side Drawer Navigation (Clean Light VIP) */}
       <div
         style={{
-          position: 'fixed', top: 0, right: 0, width: '280px', height: '100vh',
-          backgroundColor: 'white', zIndex: 2000, overflowY: 'auto',
-          display: 'flex', flexDirection: 'column', padding: '0',
-          boxShadow: '-5px 0 25px rgba(0,0,0,0.1)',
+          position: 'fixed', top: 0, right: 0, width: '260px', height: '100vh',
+          backgroundColor: 'rgba(255, 255, 255, 0.98)',
+          backdropFilter: 'blur(10px)',
+          zIndex: 2000, overflowY: 'auto',
+          display: 'flex', flexDirection: 'column',
+          boxShadow: '-10px 0 30px rgba(0,0,0,0.08)',
           transform: isMenuOpen ? 'translateX(0)' : 'translateX(100%)',
-          transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
           visibility: mounted ? (isMenuOpen ? 'visible' : 'hidden') : 'hidden'
         }}
       >
-        {/* Mobile Menu Header - Fixed Top */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px 20px', borderBottom: '1px solid #f1f5f9', backgroundColor: '#002654', position: 'sticky', top: 0, zIndex: 10 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        {/* Mobile Menu Header */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px', position: 'sticky', top: 0, zIndex: 10, backgroundColor: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <img src="/logo.png" alt="WDO Logo" style={{ height: '32px' }} />
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-              <span style={{ fontSize: '1rem', fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1' }}>WDO</span>
-              <span style={{ fontSize: '0.8rem', fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1.4' }}>SOMALILAND</span>
+              <span style={{ fontSize: '0.9rem', fontWeight: '900', color: '#002654', letterSpacing: '0.5px', lineHeight: '1' }}>WDO</span>
+              <span style={{ fontSize: '0.6rem', fontWeight: '800', color: '#64748b', letterSpacing: '1px', lineHeight: '1.4' }}>SOMALILAND</span>
             </div>
           </div>
-          <button onClick={() => setIsMenuOpen(false)} style={{ background: '#ffc107', border: 'none', borderRadius: '50%', width: '32px', height: '32px', color: '#002654', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+          <button onClick={() => setIsMenuOpen(false)} style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '50%', width: '32px', height: '32px', color: '#64748b', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.2s' }}>
             <X size={16} />
           </button>
         </div>
 
-        <div style={{ padding: '10px 20px' }}>
+        {/* Links */}
+        <div style={{ padding: '15px', flex: 1, display: 'flex', flexDirection: 'column' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
             {navLinks.map((link, idx) => (
-              <div
-                key={link.name}
-                style={{
-                  borderBottom: '1px solid #f8fafc',
-                  paddingBottom: '5px'
-                }}
-              >
+              <div key={link.name}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Link
                     href={link.dropdown ? '#' : link.href}
@@ -230,33 +241,64 @@ export default function ClientLayout({ children }) {
                       else {
                         e.preventDefault();
                         const el = document.getElementById(`mobile-drop-${link.name}`);
-                        if (el) el.style.display = el.style.display === 'none' ? 'flex' : 'none';
+                        const icon = document.getElementById(`mobile-icon-${link.name}`);
+                        if (el.style.maxHeight === '0px' || !el.style.maxHeight) {
+                          el.style.maxHeight = '500px';
+                          el.style.opacity = '1';
+                          el.style.marginTop = '8px';
+                          icon.style.transform = 'rotate(180deg)';
+                        } else {
+                          el.style.maxHeight = '0px';
+                          el.style.opacity = '0';
+                          el.style.marginTop = '0px';
+                          icon.style.transform = 'rotate(0deg)';
+                        }
                       }
                     }}
                     style={{
-                      color: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#002654' : '#334155',
-                      fontWeight: '800', fontSize: '0.9rem', textDecoration: 'none', padding: '12px 0', flex: 1,
-                      display: 'flex', alignItems: 'center', gap: '12px'
+                      color: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#0056b3' : '#1e293b',
+                      backgroundColor: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#eff6ff' : 'transparent',
+                      fontWeight: '800', fontSize: '0.85rem', textDecoration: 'none',
+                      display: 'flex', alignItems: 'center', gap: '10px', textTransform: 'uppercase', letterSpacing: '0.5px',
+                      padding: '10px 12px', borderRadius: '10px', flex: 1, transition: 'all 0.2s'
                     }}
                   >
-                    <div style={{ color: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#002654' : '#94a3b8' }}>
-                      {link.icon && React.cloneElement(link.icon, { size: 18 })}
+                    <div style={{ color: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#0056b3' : '#94a3b8' }}>
+                      {link.icon && React.cloneElement(link.icon, { size: 16 })}
                     </div>
                     {link.name}
                   </Link>
                   {link.dropdown && (
-                    <ChevronDown size={14} color="#94a3b8" />
+                    <div id={`mobile-icon-${link.name}`} onClick={(e) => {
+                        e.preventDefault();
+                        const el = document.getElementById(`mobile-drop-${link.name}`);
+                        const icon = document.getElementById(`mobile-icon-${link.name}`);
+                        if (el.style.maxHeight === '0px' || !el.style.maxHeight) {
+                          el.style.maxHeight = '500px';
+                          el.style.opacity = '1';
+                          el.style.marginTop = '8px';
+                          icon.style.transform = 'rotate(180deg)';
+                        } else {
+                          el.style.maxHeight = '0px';
+                          el.style.opacity = '0';
+                          el.style.marginTop = '0px';
+                          icon.style.transform = 'rotate(0deg)';
+                        }
+                      }}
+                      style={{ cursor: 'pointer', transition: 'transform 0.3s', color: '#94a3b8', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', borderRadius: '50%' }}>
+                      <ChevronDown size={16} />
+                    </div>
                   )}
                 </div>
 
                 {link.dropdown && (
-                  <div id={`mobile-drop-${link.name}`} style={{ display: 'none', flexDirection: 'column', gap: '10px', padding: '10px 0 10px 40px', backgroundColor: '#f8fafc', borderRadius: '8px', marginBottom: '10px' }}>
+                  <div id={`mobile-drop-${link.name}`} style={{ display: 'flex', flexDirection: 'column', gap: '5px', paddingLeft: '35px', maxHeight: '0px', opacity: 0, overflow: 'hidden', transition: 'all 0.3s ease-in-out' }}>
                     {link.dropdown.map(subItem => (
                       <Link
                         key={subItem.name}
                         href={subItem.href}
                         onClick={() => setIsMenuOpen(false)}
-                        style={{ color: pathname === subItem.href ? '#002654' : '#64748b', fontSize: '0.85rem', fontWeight: '800', textDecoration: 'none' }}
+                        style={{ color: pathname === subItem.href ? '#0056b3' : '#64748b', fontSize: '0.75rem', fontWeight: '700', textDecoration: 'none', letterSpacing: '0.5px', textTransform: 'uppercase', padding: '6px 0' }}
                       >
                         {subItem.name}
                       </Link>
@@ -268,28 +310,29 @@ export default function ClientLayout({ children }) {
           </div>
         </div>
 
-        {/* Mobile Menu Footer Actions */}
-        <div style={{ marginTop: 'auto', padding: '20px', backgroundColor: '#f8fafc', borderTop: '1px solid #f1f5f9' }}>
+        {/* Mobile Menu Footer */}
+        <div style={{ padding: '15px', backgroundColor: '#f8fafc', borderTop: '1px solid #e2e8f0' }}>
           <Link
             href="/donate"
             onClick={() => setIsMenuOpen(false)}
             style={{
-              display: 'block', width: '100%', padding: '12px', borderRadius: '8px',
-              fontSize: '0.9rem', fontWeight: '900', textAlign: 'center',
-              backgroundColor: '#ffc107', color: '#002654', textDecoration: 'none',
-              boxShadow: '0 4px 15px rgba(255,193,7,0.3)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+              width: '100%', padding: '10px', borderRadius: '10px',
+              fontSize: '0.85rem', fontWeight: '800', letterSpacing: '0.5px',
+              backgroundColor: '#002654', color: 'white', textDecoration: 'none',
+              boxShadow: '0 4px 15px rgba(0,38,84,0.15)',
               marginBottom: '10px'
             }}
           >
-            DONATE NOW
+            <Heart size={14} fill="white" /> DONATE NOW
           </Link>
 
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <a href={gmailUrl} target="_blank" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', backgroundColor: 'white', border: '1px solid #e2e8f0', color: '#1e293b', padding: '10px', borderRadius: '12px', textDecoration: 'none', fontWeight: '800', fontSize: '0.65rem' }}>
-              <Mail size={14} /> EMAIL
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <a href={gmailUrl} target="_blank" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px', backgroundColor: 'white', border: '1px solid #cbd5e1', color: '#1e293b', padding: '8px', borderRadius: '10px', textDecoration: 'none', fontWeight: '800', fontSize: '0.65rem', letterSpacing: '0.5px' }}>
+              <Mail size={12} /> EMAIL
             </a>
-            <a href={`https://wa.me/${phoneNo}`} target="_blank" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', backgroundColor: '#dcfce7', color: '#16a34a', padding: '10px', borderRadius: '12px', textDecoration: 'none', fontWeight: '800', fontSize: '0.65rem' }}>
-              <MessageCircle size={14} fill="#16a34a" color="#dcfce7" /> WHATSAPP
+            <a href={`https://wa.me/${phoneNo}`} target="_blank" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px', backgroundColor: '#ecfdf5', border: '1px solid #10b981', color: '#059669', padding: '8px', borderRadius: '10px', textDecoration: 'none', fontWeight: '800', fontSize: '0.65rem', letterSpacing: '0.5px' }}>
+              <MessageCircle size={12} fill="#059669" color="#ecfdf5" /> WHATSAPP
             </a>
           </div>
         </div>
