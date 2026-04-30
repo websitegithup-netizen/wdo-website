@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { 
-  Search, User, ShoppingCart, Menu, X, Instagram, Facebook, Twitter, 
+  Search, User, ShoppingCart, Menu, X, Instagram, 
   ChevronDown, Phone, Mail, MapPin, Globe, ArrowRight, Heart, LogIn, ChevronUp, MessageCircle, Users, HeartPulse
 } from 'lucide-react'
 

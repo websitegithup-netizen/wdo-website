@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { Users, Building, Calendar, MapPin, ArrowRight, Loader2, Globe, Heart, ShieldCheck } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
+import Link from 'next/link'
 
 export default function NetworkAndEvents() {
   const [networkData, setNetworkData] = useState([])
@@ -111,8 +112,9 @@ export default function NetworkAndEvents() {
 
           <div style={{ 
             display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
-            gap: '30px' 
+            gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', 
+            gap: '30px',
+            justifyContent: 'center'
           }}>
             {events.map(event => (
               <div key={event.id} style={{ 
@@ -133,16 +135,29 @@ export default function NetworkAndEvents() {
                     </span>
                   </div>
                   <h4 style={{ fontSize: '1.25rem', fontWeight: '900', color: '#1e293b', marginBottom: '12px', lineHeight: '1.3' }}>{event.name}</h4>
-                  <p style={{ color: '#64748b', fontSize: '0.9rem', lineHeight: '1.7', marginBottom: '20px', flex: 1 }}>
+                  <p style={{ 
+                    color: '#64748b', 
+                    fontSize: '0.9rem', 
+                    lineHeight: '1.7', 
+                    marginBottom: '20px', 
+                    flex: 1,
+                    display: '-webkit-box',
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden'
+                  }}>
                     {event.description}
                   </p>
-                  <button style={{ 
-                    display: 'flex', alignItems: 'center', gap: '8px', color: '#002654', 
-                    fontWeight: '800', fontSize: '0.8rem', background: 'none', border: 'none', 
-                    cursor: 'pointer', padding: '0', height: '48px', textTransform: 'uppercase', letterSpacing: '0.5px' 
-                  }}>
+                  <Link 
+                    href={`/network/${event.id}`}
+                    style={{ 
+                      display: 'flex', alignItems: 'center', gap: '8px', color: '#002654', 
+                      fontWeight: '800', fontSize: '0.8rem', textDecoration: 'none',
+                      cursor: 'pointer', padding: '0', height: '48px', textTransform: 'uppercase', letterSpacing: '0.5px' 
+                    }}
+                  >
                     READ MORE <ArrowRight size={16} />
-                  </button>
+                  </Link>
                 </div>
               </div>
             ))}
