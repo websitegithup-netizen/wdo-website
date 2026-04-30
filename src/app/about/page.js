@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Target, Eye, Heart, ShieldCheck, Award, Users, ChevronRight, TreePine, BookOpen, HeartPulse } from 'lucide-react'
+import { Target, Eye, Heart, ShieldCheck, Award, Users, ChevronRight, TreePine, BookOpen, HeartPulse, Globe } from 'lucide-react'
 
 export const metadata = {
   title: 'Who We Are | WDO',
@@ -130,9 +130,10 @@ export default function About() {
               { title: 'Improving Education', icon: <BookOpen />, desc: 'Enhancing educational access for vulnerable households through innovative technologies.' },
               { title: 'Improving Healthcare', icon: <HeartPulse />, desc: 'Ensuring children and women receive safe, timely, and effective health services.' },
               { title: 'Youth Development', icon: <Users />, desc: 'Improving access to quality basic services and skills for Somaliland’s youth.' },
-              { title: 'Environmental Improvement', icon: <TreePine />, desc: 'Promoting initiatives for environmental sustainability and conservation.' }
+              { title: 'Environmental Improvement', icon: <TreePine />, desc: 'Promoting initiatives for environmental sustainability and conservation.' },
+              { title: 'Global Network & Events', icon: <Globe />, desc: 'Building strategic international partnerships and fostering global engagement.' }
             ].map((obj) => (
-              <div key={obj.title} style={{ display: 'flex', gap: '20px', backgroundColor: '#f8fafc', padding: '25px', borderRadius: '12px' }}>
+              <Link href={obj.title === 'Global Network & Events' ? '/network' : '#'} key={obj.title} style={{ display: 'flex', gap: '20px', backgroundColor: '#f8fafc', padding: '25px', borderRadius: '12px', textDecoration: 'none', color: 'inherit' }}>
                 <div style={{ color: 'var(--primary-color)', flexShrink: 0 }}>
                   {obj.icon}
                 </div>
@@ -140,7 +141,7 @@ export default function About() {
                   <h4 className="font-bold mb-2">{obj.title}</h4>
                   <p className="text-sm text-muted">{obj.desc}</p>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

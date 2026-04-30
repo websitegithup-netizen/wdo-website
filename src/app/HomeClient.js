@@ -267,7 +267,7 @@ export default function HomeClient() {
                 {status.text}
               </div>
             )}
-            <form onSubmit={handleSubscribe} style={{ display: 'flex', gap: '10px' }}>
+            <form onSubmit={handleSubscribe} className="newsletter-form" style={{ display: 'flex', gap: '10px' }}>
                <input 
                  type="email" 
                  required
@@ -279,6 +279,7 @@ export default function HomeClient() {
                <button 
                  type="submit"
                  disabled={subscribing}
+                 className="subscribe-btn"
                  style={{ 
                    padding: '12px 25px', 
                    backgroundColor: '#002654', 
@@ -288,7 +289,8 @@ export default function HomeClient() {
                    fontWeight: '900', 
                    cursor: subscribing ? 'not-allowed' : 'pointer', 
                    fontSize: '0.9rem',
-                   opacity: subscribing ? 0.8 : 1
+                   opacity: subscribing ? 0.8 : 1,
+                   whiteSpace: 'nowrap'
                  }}
                >
                  {subscribing ? '...' : 'SUBSCRIBE'}
@@ -335,6 +337,8 @@ export default function HomeClient() {
             border-left-width: 4px !important;
           }
           .section { padding: 40px 0 !important; }
+          .newsletter-form { flex-direction: column !important; }
+          .subscribe-btn { width: 100% !important; }
         }
       `}} />
     </div>

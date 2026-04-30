@@ -3,7 +3,10 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, X, Phone, Mail, Heart, LogIn, ChevronUp, MessageCircle, ChevronDown, Users, HeartPulse, Search, Globe } from 'lucide-react'
+import { 
+  Search, User, ShoppingCart, Menu, X, Instagram, Facebook, Twitter, 
+  ChevronDown, Phone, Mail, MapPin, Globe, ArrowRight, Heart, LogIn, ChevronUp, MessageCircle, Users, HeartPulse
+} from 'lucide-react'
 
 export default function ClientLayout({ children }) {
   const pathname = usePathname()
@@ -61,7 +64,8 @@ export default function ClientLayout({ children }) {
       dropdown: [
         { name: 'MISSION & VISION', href: '/about/mission' },
         { name: 'OUR OBJECTIVES', href: '/about/objectives' },
-        { name: 'OUR TEAM', href: '/about/team' }
+        { name: 'OUR TEAM', href: '/about/team' },
+        { name: 'NETWORK & EVENTS', href: '/network' }
       ]
     },
     {
@@ -87,8 +91,8 @@ export default function ClientLayout({ children }) {
         backgroundColor: isScrolled ? '#001a3a' : '#002654',
         color: 'white',
         padding: isScrolled ? '0' : '8px 0',
-        borderBottom: '1px solid rgba(255,255,255,0.1)',
-        maxHeight: isScrolled ? '0' : '50px',
+        borderBottom: 'none',
+        maxHeight: isScrolled ? '0' : '45px',
         overflow: 'hidden',
         transition: 'all 0.4s ease',
         position: 'fixed',
@@ -96,7 +100,7 @@ export default function ClientLayout({ children }) {
         width: '100%',
         zIndex: 1001
       }}>
-        <div className="container" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '25px' }}>
+        <div className="container" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '25px', height: '100%' }}>
           <a href={`tel:+${phoneNo}`} onClick={handlePhoneClick} style={{ color: 'white', fontSize: '0.8rem', fontWeight: '700', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Phone size={14} fill="#ffc107" color="#ffc107" /> +252 63 3084563
           </a>
@@ -108,7 +112,7 @@ export default function ClientLayout({ children }) {
 
       <header className="header" style={{
         position: 'fixed',
-        top: isMobile || isScrolled ? '0' : '38px',
+        top: isMobile || isScrolled ? '0' : '33px',
         width: '100%',
         zIndex: 1000,
         backgroundColor: !mounted || isMobile || isScrolled || pathname !== '/' ? '#002654' : 'transparent',
@@ -126,19 +130,19 @@ export default function ClientLayout({ children }) {
                 transition: 'all 0.4s ease'
               }}
             />
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-              <span style={{ fontSize: isMobile || isScrolled || pathname !== '/' ? '1rem' : '1.3rem', fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1' }}>WDO</span>
-              <span style={{ fontSize: isMobile || isScrolled || pathname !== '/' ? '1rem' : '1.3rem', fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1.4' }}>SOMALILAND</span>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', maxWidth: isMobile ? '160px' : 'none' }}>
+              <span style={{ fontSize: isMobile ? '0.7rem' : (isScrolled || pathname !== '/' ? '0.85rem' : '1rem'), fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1', whiteSpace: 'nowrap' }}>WAQAL DEVELOPMENT</span>
+              <span style={{ fontSize: isMobile ? '0.7rem' : (isScrolled || pathname !== '/' ? '0.85rem' : '1rem'), fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1.4', whiteSpace: 'nowrap' }}>ORGANIZATION</span>
             </div>
           </Link>
 
-          <nav className="hidden-mobile" style={{ display: 'flex', gap: '1.2rem', alignItems: 'center', marginLeft: 'auto', marginRight: '20px' }}>
+          <nav className="hidden-mobile" style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', marginLeft: 'auto', paddingLeft: '40px', marginRight: '15px' }}>
             {navLinks.map((link) => (
               <div key={link.name} className={link.dropdown ? "nav-dropdown-container" : ""} style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center' }}>
                 <Link
                   href={link.dropdown ? '#' : link.href}
                   onClick={(e) => link.dropdown && e.preventDefault()}
-                  style={{ color: 'white', fontWeight: '700', fontSize: '0.75rem', textDecoration: 'none', letterSpacing: '0.5px' }}
+                  style={{ color: 'white', fontWeight: '700', fontSize: '0.75rem', textDecoration: 'none', letterSpacing: '0.5px', whiteSpace: 'nowrap' }}
                 >
                   {link.name}
                 </Link>
@@ -160,46 +164,27 @@ export default function ClientLayout({ children }) {
           </nav>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <Link href="/network" className="hidden-mobile" style={{
+              backgroundColor: '#0056b3', color: 'white', padding: '8px 20px',
+              fontWeight: '900', fontSize: '0.75rem', textDecoration: 'none',
+              borderRadius: '100px', display: 'block', whiteSpace: 'nowrap',
+              boxShadow: '0 4px 10px rgba(0,86,179,0.2)'
+            }}>
+              JOIN NETWORK
+            </Link>
             <Link href="/donate" className="hidden-mobile" style={{
-              backgroundColor: '#ffc107', color: '#002654', padding: '8px 18px',
-              fontWeight: '900', fontSize: '0.8rem', textDecoration: 'none',
-              borderRadius: '2px', display: 'block'
+              backgroundColor: '#ffc107', color: '#002654', padding: '8px 20px',
+              fontWeight: '900', fontSize: '0.75rem', textDecoration: 'none',
+              borderRadius: '100px', display: 'block', whiteSpace: 'nowrap'
             }}>
               DONATE
             </Link>
-            <button className="show-mobile" onClick={() => setIsMenuOpen(!isMenuOpen)} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', padding: '5px' }}>
+            <button className="show-mobile" onClick={() => setIsMenuOpen(!isMenuOpen)} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: 'white', cursor: 'pointer', padding: '8px', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
       </header>
-
-      {/* Mobile Drawer Overlay */}
-      {isMenuOpen && (
-        <div
-          onClick={() => setIsMenuOpen(false)}
-          style={{
-            position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh',
-            backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1999,
-            backdropFilter: 'blur(4px)',
-            transition: 'opacity 0.3s ease'
-          }}
-        />
-      )}
-
-      {/* Mobile Drawer Overlay */}
-      {isMenuOpen && (
-        <div
-          onClick={() => setIsMenuOpen(false)}
-          style={{
-            position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh',
-            backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 1999,
-            backdropFilter: 'blur(4px)',
-            transition: 'opacity 0.3s ease'
-
-          }}
-        />
-      )}
 
       {/* Side Drawer Navigation (Clean Light VIP) */}
       <div
@@ -220,8 +205,8 @@ export default function ClientLayout({ children }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <img src="/logo.png" alt="WDO Logo" style={{ height: '32px' }} />
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-              <span style={{ fontSize: '0.9rem', fontWeight: '900', color: '#002654', letterSpacing: '0.5px', lineHeight: '1' }}>WDO</span>
-              <span style={{ fontSize: '0.6rem', fontWeight: '800', color: '#64748b', letterSpacing: '1px', lineHeight: '1.4' }}>SOMALILAND</span>
+              <span style={{ fontSize: '0.8rem', fontWeight: '900', color: '#002654', letterSpacing: '0.5px', lineHeight: '1' }}>WAQAL DEVELOPMENT</span>
+              <span style={{ fontSize: '0.55rem', fontWeight: '800', color: '#64748b', letterSpacing: '1px', lineHeight: '1.4' }}>ORGANIZATION</span>
             </div>
           </div>
           <button onClick={() => setIsMenuOpen(false)} style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '50%', width: '32px', height: '32px', color: '#64748b', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.2s' }}>
@@ -270,23 +255,7 @@ export default function ClientLayout({ children }) {
                     {link.name}
                   </Link>
                   {link.dropdown && (
-                    <div id={`mobile-icon-${link.name}`} onClick={(e) => {
-                      e.preventDefault();
-                      const el = document.getElementById(`mobile-drop-${link.name}`);
-                      const icon = document.getElementById(`mobile-icon-${link.name}`);
-                      if (el.style.maxHeight === '0px' || !el.style.maxHeight) {
-                        el.style.maxHeight = '500px';
-                        el.style.opacity = '1';
-                        el.style.marginTop = '8px';
-                        icon.style.transform = 'rotate(180deg)';
-                      } else {
-                        el.style.maxHeight = '0px';
-                        el.style.opacity = '0';
-                        el.style.marginTop = '0px';
-                        icon.style.transform = 'rotate(0deg)';
-                      }
-                    }}
-                      style={{ cursor: 'pointer', transition: 'transform 0.3s', color: '#94a3b8', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', borderRadius: '50%' }}>
+                    <div id={`mobile-icon-${link.name}`} style={{ transition: 'transform 0.3s', color: '#94a3b8' }}>
                       <ChevronDown size={16} />
                     </div>
                   )}
@@ -327,128 +296,111 @@ export default function ClientLayout({ children }) {
           >
             <Heart size={14} fill="white" /> DONATE NOW
           </Link>
-
-          <div style={{ display: 'flex', gap: '8px' }}>
-            <a href={gmailUrl} target="_blank" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px', backgroundColor: 'white', border: '1px solid #cbd5e1', color: '#1e293b', padding: '8px', borderRadius: '10px', textDecoration: 'none', fontWeight: '800', fontSize: '0.65rem', letterSpacing: '0.5px' }}>
-              <Mail size={12} /> EMAIL
-            </a>
-            <a href={`https://wa.me/${phoneNo}`} target="_blank" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px', backgroundColor: '#ecfdf5', border: '1px solid #10b981', color: '#059669', padding: '8px', borderRadius: '10px', textDecoration: 'none', fontWeight: '800', fontSize: '0.65rem', letterSpacing: '0.5px' }}>
-              <MessageCircle size={12} fill="#059669" color="#ecfdf5" /> WHATSAPP
-            </a>
-          </div>
         </div>
       </div>
 
+      {/* Overlay */}
+      {isMenuOpen && <div onClick={() => setIsMenuOpen(false)} style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1999, backdropFilter: 'blur(4px)' }} />}
+
       <main className="main-content" style={{
-        paddingTop: pathname === '/' ? '0' : (isMobile ? '55px' : '115px'),
+        paddingTop: pathname === '/' ? '0' : (isMobile ? '70px' : '90px'),
         minHeight: '80vh'
       }}>
         {children}
       </main>
 
-      {/* Floating Buttons Stack */}
-      <div style={{ position: 'fixed', bottom: '20px', right: '20px', zIndex: 9999, display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center' }}>
-        {/* WhatsApp Floating */}
-        <a
-          href={`https://wa.me/${phoneNo}`}
-          target="_blank"
-          className="animate-fade-in"
-          style={{
-            backgroundColor: '#25D366',
-            color: 'white',
-            width: '48px',
-            height: '48px',
-            borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
-            transition: 'all 0.3s ease',
-            textDecoration: 'none'
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
-          onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-        >
-          <MessageCircle size={28} fill="#fff" color="#25D366" />
-        </a>
-
-        {/* Scroll Up Floating */}
-        {showScrollUp && (
-          <button
-            onClick={scrollToTop}
-            className="animate-fade-in"
-            style={{
-              backgroundColor: '#002654',
-              color: 'white',
-              width: '40px',
-              height: '40px',
-              borderRadius: '50%',
-              border: 'none',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
-              transition: 'all 0.3s ease'
-            }}
-          >
-            <ChevronUp size={24} />
-          </button>
-        )}
-      </div>
-
       {/* Footer */}
-      <footer className="footer" style={{ backgroundColor: '#1a1a1a', color: '#ccc', padding: '25px 0 15px' }}>
+      <footer className="footer" style={{ backgroundColor: '#0a192f', color: '#e2e8f0', padding: '60px 0 30px', borderTop: '3px solid #ffc107' }}>
         <div className="container">
-          <div className="grid-cols-3" style={{ display: 'grid', gap: '20px', marginBottom: '20px' }}>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-                <img src="/logo.png" alt="WDO Logo" style={{ height: '25px' }} />
-                <h3 style={{ color: 'white', margin: 0, fontSize: '1rem' }}>WDO SOMALILAND</h3>
-              </div>
-              <p style={{ fontSize: '0.8rem', lineHeight: '1.5', textAlign: 'justify', opacity: 0.8 }}>
-                Waqal Development Organization (WDO) provides sustainable solutions in education, health, youth, and environment.
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '30px' }}>
+            {/* Column 1: Logo & Mission */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+              <img src="/logo.png" alt="WDO" style={{ height: '50px', width: 'auto', alignSelf: 'flex-start' }} />
+              <p style={{ fontSize: '0.85rem', opacity: 0.7, lineHeight: '1.6', margin: 0 }}>
+                Building a sustainable future for Somaliland through education, healthcare, and empowerment.
               </p>
+              <div style={{ display: 'flex', gap: '12px', marginTop: '5px' }}>
+                <a href="#" style={{ color: '#ffc107' }}><Globe size={18} /></a>
+                <a href="#" style={{ color: '#ffc107' }}><Mail size={18} /></a>
+              </div>
             </div>
-            <div>
-              <h4 style={{ color: 'white', marginBottom: '10px', fontSize: '0.9rem' }}>Quick Links</h4>
-              <ul style={{ listStyle: 'none', padding: 0, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5px' }}>
-                {navLinks.map(link => (
-                  <React.Fragment key={link.name}>
-                    {link.dropdown ? (
-                      link.dropdown.slice(0, 2).map(subItem => (
-                        <li key={subItem.name}>
-                          <Link href={subItem.href} style={{ color: '#ccc', fontSize: '0.8rem', textDecoration: 'none' }}>{subItem.name}</Link>
-                        </li>
-                      ))
-                    ) : (
-                      <li>
-                        <Link href={link.href} style={{ color: '#ccc', fontSize: '0.8rem', textDecoration: 'none' }}>{link.name}</Link>
-                      </li>
-                    )}
-                  </React.Fragment>
-                ))}
+
+            {/* Column 2: Quick Links */}
+            <div className="hidden-mobile" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <h4 style={{ fontWeight: '800', fontSize: '1rem', color: 'white', margin: 0, display: 'block' }}>
+                Quick Links
+                <div style={{ width: '25px', height: '2px', backgroundColor: '#ffc107', marginTop: '8px' }}></div>
+              </h4>
+              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', padding: 0, margin: 0 }}>
+                <li><Link href="/about" className="footer-link">About WDO</Link></li>
+                <li><Link href="/programs" className="footer-link">Our Programs</Link></li>
+                <li><Link href="/news" className="footer-link">Latest News</Link></li>
+                <li><Link href="/contact" className="footer-link">Contact Us</Link></li>
+                <li><Link href="/gallery" className="footer-link">Gallery</Link></li>
               </ul>
             </div>
+
+            {/* Column 3: Our Programs */}
+            <div className="hidden-mobile" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <h4 style={{ fontWeight: '800', fontSize: '1rem', color: 'white', margin: 0, display: 'block' }}>
+                Our Programs
+                <div style={{ width: '25px', height: '2px', backgroundColor: '#ffc107', marginTop: '8px' }}></div>
+              </h4>
+              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', padding: 0, margin: 0 }}>
+                <li><Link href="/programs/education" className="footer-link">Education</Link></li>
+                <li><Link href="/programs/health" className="footer-link">Healthcare</Link></li>
+                <li><Link href="/programs/environment" className="footer-link">Environment</Link></li>
+                <li><Link href="/programs/youth" className="footer-link">Youth Development</Link></li>
+              </ul>
+            </div>
+
+            {/* Column 4: Contact Info */}
             <div>
-              <h4 style={{ color: 'white', marginBottom: '10px', fontSize: '0.9rem' }}>Contact</h4>
-              <p style={{ fontSize: '0.8rem', marginBottom: '5px' }}>Hargeisa, Somaliland</p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                <a href={gmailUrl} target="_blank" style={{ color: '#ccc', textDecoration: 'none', fontSize: '0.8rem' }}>{email}</a>
-                <a href={`tel:+${phoneNo}`} onClick={handlePhoneClick} style={{ color: '#ccc', textDecoration: 'none', fontSize: '0.8rem' }}>+252 63 3084563</a>
+              <h4 style={{ fontWeight: '800', fontSize: '1rem', marginBottom: '20px', color: 'white' }}>
+                Contact Info
+                <div style={{ width: '25px', height: '2px', backgroundColor: '#ffc107', marginTop: '8px' }}></div>
+              </h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+                  <MapPin size={16} style={{ color: '#ffc107', marginTop: '2px' }} />
+                  <span style={{ fontSize: '0.85rem', opacity: 0.7 }}>Gabiley & Hargeisa, Somaliland</span>
+                </div>
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                  <Mail size={16} style={{ color: '#ffc107' }} />
+                  <span style={{ fontSize: '0.85rem', opacity: 0.7 }}>{email}</span>
+                </div>
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                  <Phone size={16} style={{ color: '#ffc107' }} />
+                  <span style={{ fontSize: '0.85rem', opacity: 0.7 }}>+252 63 3084563</span>
+                </div>
               </div>
             </div>
           </div>
-          <div style={{ borderTop: '1px solid #333', paddingTop: '10px', textAlign: 'center', fontSize: '0.7rem', opacity: 0.6 }}>
-            &copy; {new Date().getFullYear()} WDO. All rights reserved.
+
+          <div style={{ marginTop: '40px', paddingTop: '20px', borderTop: '1px solid rgba(255,255,255,0.05)', textAlign: 'center' }}>
+            <p style={{ fontSize: '0.8rem', opacity: 0.4, margin: 0 }}>
+              &copy; {new Date().getFullYear()} Waqal Development Organization.
+            </p>
           </div>
         </div>
       </footer>
 
       <style dangerouslySetInnerHTML={{
         __html: `
+        .footer-link { color: #e2e8f0; text-decoration: none; font-size: 0.9rem; transition: all 0.3s ease; }
+        .footer-link:hover { color: #ffc107; padding-left: 5px; }
         @media (min-width: 769px) { .show-mobile { display: none !important; } }
-        @media (max-width: 768px) { .hidden-mobile { display: none !important; } .show-mobile { display: block !important; } }
+        @media (max-width: 768px) { 
+          .hidden-mobile { display: none !important; } 
+          .show-mobile { display: block !important; } 
+          .footer { text-align: center !important; padding: 40px 0 20px !important; }
+          .footer .container > div { 
+            grid-template-columns: 1fr !important; 
+            gap: 30px !important; 
+          }
+          .footer img { margin: 0 auto 20px !important; }
+          .footer h4 { margin-bottom: 15px !important; }
+        }
       `}} />
     </>
   )
