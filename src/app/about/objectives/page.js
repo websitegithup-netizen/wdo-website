@@ -69,7 +69,20 @@ export default function Objectives() {
 
       <style dangerouslySetInnerHTML={{ __html: `
         @media (max-width: 768px) {
-          .grid-cols-2 { grid-template-columns: 1fr !important; }
+          .grid-cols-2 { 
+            grid-template-columns: repeat(2, 1fr) !important; 
+            gap: 12px !important;
+          }
+          .container { padding: 0 15px !important; }
+          section { padding: 40px 0 !important; }
+          .section-light { padding: 30px 0 !important; }
+          h1 { font-size: 1.6rem !important; }
+          h2 { font-size: 1.3rem !important; }
+          .grid-cols-2 > div { padding: 15px !important; border-radius: 12px !important; }
+          .grid-cols-2 h3 { font-size: 0.9rem !important; margin-bottom: 5px !important; }
+          .grid-cols-2 p { font-size: 0.75rem !important; line-height: 1.4 !important; }
+          .grid-cols-2 svg { width: 22px !important; height: 22px !important; }
+          .grid-cols-2 > div > div { padding: 10px !important; border-radius: 10px !important; margin-bottom: 12px !important; }
         }
       `}} />
     </div>

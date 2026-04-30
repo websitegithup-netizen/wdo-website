@@ -166,17 +166,17 @@ export default function MissionVision() {
              <p style={{ fontSize: '1rem', color: '#64748b', lineHeight: '1.6' }}>Our organizational culture is defined by a commitment to excellence and deep respect for the people we serve.</p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '30px' }}>
+          <div className="values-grid">
             {[
               { title: 'Integrity', icon: <ShieldCheck size={28} />, color: '#16a34a' },
               { title: 'Innovation', icon: <Zap size={28} />, color: '#ffc107' },
               { title: 'Compassion', icon: <Heart size={28} />, color: '#ef4444' },
               { title: 'Excellence', icon: <Award size={28} />, color: '#3b82f6' }
             ].map((v) => (
-              <div key={v.title} className="hover-scale" style={{ borderLeft: `4px solid ${v.color}`, padding: '25px', backgroundColor: '#f8fafc', borderRadius: '0 12px 12px 0' }}>
-                <div style={{ color: v.color, marginBottom: '15px' }}>{v.icon}</div>
-                <h4 style={{ fontSize: '1.2rem', fontWeight: '900', marginBottom: '10px', color: '#1e293b' }}>{v.title}</h4>
-                <p style={{ fontSize: '0.9rem', color: '#64748b', lineHeight: '1.6' }}>We uphold the highest standards in every project we undertake.</p>
+              <div key={v.title} className="hover-scale value-card" style={{ borderLeft: `4px solid ${v.color}`, backgroundColor: '#f8fafc', borderRadius: '0 12px 12px 0' }}>
+                <div style={{ color: v.color, marginBottom: '15px' }} className="value-icon">{v.icon}</div>
+                <h4 style={{ fontWeight: '900', color: '#1e293b' }} className="value-title">{v.title}</h4>
+                <p style={{ color: '#64748b', lineHeight: '1.6' }} className="value-desc">We uphold the highest standards in every project we undertake.</p>
               </div>
             ))}
           </div>
@@ -190,9 +190,28 @@ export default function MissionVision() {
         .mission-image-hover:hover { filter: grayscale(0); }
         .vision-image-hover { filter: brightness(1); transition: filter 0.5s ease; }
         .vision-image-hover:hover { filter: brightness(1.1); }
+        
+        .values-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 30px;
+        }
+        .value-card { padding: 25px; }
+        .value-title { fontSize: 1.2rem; margin-bottom: 10px; }
+        .value-desc { fontSize: 0.9rem; }
+
+        @media (max-width: 992px) {
+          .values-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        }
+
         @media (max-width: 768px) {
           section { padding: 40px 0 !important; }
           h1 { font-size: 2.8rem !important; }
+          .values-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+          .value-card { padding: 15px; }
+          .value-title { font-size: 0.9rem !important; margin-bottom: 5px !important; }
+          .value-desc { font-size: 0.75rem !important; line-height: 1.4 !important; }
+          .value-icon svg { width: 22px !important; height: 22px !important; }
         }
       `}} />
 

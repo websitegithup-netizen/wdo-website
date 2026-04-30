@@ -206,17 +206,40 @@ export default function HomeClient() {
             <h2 className="responsive-h2" style={{ fontWeight: '900', marginBottom: '15px' }}>Our Core Programs</h2>
             <p style={{ color: '#64748b' }}>Targeted interventions for sustainable growth in Somaliland.</p>
           </div>
-          <div className="grid grid-cols-4" style={{ gap: '20px' }}>
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', 
+            gap: isMobile ? '12px' : '25px' 
+          }}>
             {[
-              { title: 'Improving Education', icon: <BookOpen />, desc: 'Enhancing educational access for vulnerable households and climate-affected communities through innovative technologies and community resources.', delay: 'delay-100' },
-              { title: 'Improving Healthcare', icon: <HeartPulse />, desc: 'Ensuring children and women receive safe, timely, and effective services while conducting awareness initiatives on gender equality and protection.', delay: 'delay-200' },
-              { title: 'Youth Development', icon: <Users />, desc: "Improving access to equitable quality basic services, skills, and educational opportunities for Somaliland's youth.", delay: 'delay-300' },
-              { title: 'Environmental Improvement', icon: <TreePine />, desc: 'Promoting initiatives for environmental sustainability and conservation.', delay: 'delay-500' }
+              { title: 'Improving Education', icon: <BookOpen size={isMobile ? 20 : 24} />, desc: 'Enhancing educational access for vulnerable households and climate-affected communities through innovative technologies and community resources.', delay: 'delay-100' },
+              { title: 'Improving Healthcare', icon: <HeartPulse size={isMobile ? 20 : 24} />, desc: 'Ensuring children and women receive safe, timely, and effective services while conducting awareness initiatives on gender equality and protection.', delay: 'delay-200' },
+              { title: 'Youth Development', icon: <Users size={isMobile ? 20 : 24} />, desc: "Improving access to equitable quality basic services, skills, and educational opportunities for Somaliland's youth.", delay: 'delay-300' },
+              { title: 'Environmental Improvement', icon: <TreePine size={isMobile ? 20 : 24} />, desc: 'Promoting initiatives for environmental sustainability and conservation.', delay: 'delay-500' }
             ].map((program) => (
-              <div key={program.title} className={`card hover-scale animate-fade-up ${program.delay}`} style={{ padding: '30px', border: 'none', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', height: '100%' }}>
-                <div style={{ backgroundColor: '#0056b3', color: 'white', width: '50px', height: '50px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px', flexShrink: 0 }}>{program.icon}</div>
-                <h4 style={{ fontSize: '1.2rem', fontWeight: '900', marginBottom: '12px', color: '#1e293b' }}>{program.title}</h4>
-                <p style={{ color: '#64748b', fontSize: '0.9rem', lineHeight: '1.6' }}>{program.desc}</p>
+              <div key={program.title} className={`card hover-scale animate-fade-up ${program.delay}`} style={{ 
+                padding: isMobile ? '15px' : '30px', 
+                border: 'none', 
+                boxShadow: '0 4px 15px rgba(0,0,0,0.03)', 
+                display: 'flex', 
+                flexDirection: 'column', 
+                height: '100%',
+                borderRadius: isMobile ? '12px' : '20px'
+              }}>
+                <div style={{ 
+                  backgroundColor: '#0056b3', 
+                  color: 'white', 
+                  width: isMobile ? '36px' : '50px', 
+                  height: isMobile ? '36px' : '50px', 
+                  borderRadius: isMobile ? '8px' : '12px', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  marginBottom: isMobile ? '12px' : '20px', 
+                  flexShrink: 0 
+                }}>{program.icon}</div>
+                <h4 style={{ fontSize: isMobile ? '0.9rem' : '1.2rem', fontWeight: '900', marginBottom: isMobile ? '8px' : '12px', color: '#1e293b', lineHeight: '1.2' }}>{program.title}</h4>
+                <p style={{ color: '#64748b', fontSize: isMobile ? '0.75rem' : '0.9rem', lineHeight: '1.6' }}>{program.desc}</p>
               </div>
             ))}
           </div>
