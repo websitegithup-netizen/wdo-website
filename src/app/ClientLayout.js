@@ -326,8 +326,9 @@ export default function ClientLayout({ children }) {
         {children}
       </main>
 
-      {/* Footer */}
-      <footer className="footer" style={{ backgroundColor: '#0a192f', color: '#e2e8f0', padding: '60px 0 30px', borderTop: '3px solid #ffc107' }}>
+      {/* Footer - Hidden on Event Detail pages */}
+      {!(pathname.startsWith('/network/') && pathname !== '/network') && (
+        <footer className="footer" style={{ backgroundColor: '#0a192f', color: '#e2e8f0', padding: '60px 0 30px', borderTop: '3px solid #ffc107' }}>
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '30px' }}>
             {/* Column 1: Logo & Mission */}
@@ -401,6 +402,7 @@ export default function ClientLayout({ children }) {
           </div>
         </div>
       </footer>
+      )}
 
       <style dangerouslySetInnerHTML={{
         __html: `
