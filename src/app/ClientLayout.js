@@ -130,9 +130,34 @@ export default function ClientLayout({ children }) {
                 transition: 'all 0.4s ease'
               }}
             />
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', maxWidth: isMobile ? '160px' : 'none' }}>
-              <span style={{ fontSize: isMobile ? '0.7rem' : (isScrolled || pathname !== '/' ? '0.85rem' : '1rem'), fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1', whiteSpace: 'nowrap' }}>WAQAL DEVELOPMENT</span>
-              <span style={{ fontSize: isMobile ? '0.7rem' : (isScrolled || pathname !== '/' ? '0.85rem' : '1rem'), fontWeight: '900', color: 'white', letterSpacing: '0.5px', lineHeight: '1.4', whiteSpace: 'nowrap' }}>ORGANIZATION</span>
+            <div style={{ 
+              display: 'flex', 
+              flexDirection: 'column', 
+              justifyContent: 'center',
+              alignItems: 'center',
+              maxWidth: isMobile ? '160px' : 'none',
+              gap: '2px'
+            }}>
+              <span style={{ 
+                fontSize: isMobile ? '0.7rem' : (isScrolled || pathname !== '/' ? '0.85rem' : '0.95rem'), 
+                fontWeight: '900', 
+                color: 'white', 
+                letterSpacing: '0.5px', 
+                lineHeight: '1', 
+                whiteSpace: 'nowrap' 
+              }}>
+                WAQAL DEVELOPMENT
+              </span>
+              <span style={{ 
+                fontSize: isMobile ? '0.7rem' : (isScrolled || pathname !== '/' ? '0.85rem' : '0.95rem'), 
+                fontWeight: '900', 
+                color: 'white', 
+                letterSpacing: '0.5px', 
+                lineHeight: '1', 
+                whiteSpace: 'nowrap' 
+              }}>
+                ORGANIZATION
+              </span>
             </div>
           </Link>
 
