@@ -9,7 +9,13 @@ export default function NetworkAndEvents() {
   const [networkData, setNetworkData] = useState([])
   const [loading, setLoading] = useState(true)
 
+  const [isMobile, setIsMobile] = useState(false)
+
   useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768)
+    handleResize()
+    window.addEventListener('resize', handleResize)
+
     async function fetchData() {
       try {
         const { data, error } = await supabase
@@ -26,6 +32,7 @@ export default function NetworkAndEvents() {
       }
     }
     fetchData()
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   const networkMembers = networkData.filter(item => item.type === 'met')
@@ -36,7 +43,7 @@ export default function NetworkAndEvents() {
       
       {/* 1. HERO SECTION - Fluid & Margins */}
       <section className="hero-network" style={{ 
-        padding: 'clamp(60px, 10vh, 120px) 0 clamp(40px, 8vh, 80px)', 
+        padding: isMobile ? '90px 0 40px' : 'clamp(140px, 20vh, 200px) 0 clamp(60px, 10vh, 100px)', 
         backgroundColor: '#002654',
         color: 'white',
         textAlign: 'center',
@@ -64,8 +71,101 @@ export default function NetworkAndEvents() {
         </div>
       </section>
 
-      {/* 2. NETWORK SECTION - Member/Partner Grid */}
-      <section style={{ padding: 'clamp(60px, 8vh, 100px) 0', borderBottom: '1px solid #f1f5f9' }}>
+      {/* 2. EVENTS SECTION - Card Grid */}
+      <section style={{ padding: 'clamp(60px, 8vh, 100px) 0', backgroundColor: '#fcfcfc' }}>
+        <div className="container responsive-container">
+          <div style={{ textAlign: 'center', marginBottom: 'clamp(40px, 6vh, 70px)' }}>
+            <h3 style={{ fontSize: 'clamp(1.5rem, 5vw, 2rem)', fontWeight: '900', color: '#002654', marginBottom: '15px', textTransform: 'uppercase', letterSpacing: '1px' }}>Events & Impact</h3>
+            <p style={{ color: '#64748b', fontSize: 'clamp(0.9rem, 2.5vw, 1rem)', fontWeight: '500' }}>Witness our journey through recent field visits and summits.</p>
+            <div style={{ width: '40px', height: '4px', backgroundColor: '#16a34a', margin: '20px auto 0' }}></div>
+          </div>
+
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(auto-fill, minmax(350px, 1fr))', 
+            gap: isMobile ? '12px' : '30px',
+            justifyContent: 'center'
+          }}>
+            {events.map(event => (
+              <div key={event.id} style={{ 
+                backgroundColor: 'white', 
+                borderRadius: isMobile ? '12px' : '20px', 
+                overflow: 'hidden', 
+                boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
+                display: 'flex',
+                flexDirection: 'column',
+                transition: 'transform 0.3s ease',
+                border: '1px solid #f1f5f9'
+              }} className="event-card-hover">
+                <div style={{ height: isMobile ? '120px' : '220px', overflow: 'hidden' }}>
+                  <img src={event.image} alt={event.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+                <div style={{ padding: isMobile ? '12px' : '25px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '5px' : '10px', marginBottom: isMobile ? '8px' : '15px', flexWrap: 'wrap' }}>
+                    <span style={{ 
+                      backgroundColor: '#eff6ff', 
+                      color: '#0056b3', 
+                      padding: isMobile ? '2px 6px' : '4px 12px', 
+                      borderRadius: '4px', 
+                      fontSize: isMobile ? '0.65rem' : '0.75rem', 
+                      fontWeight: '800' 
+                    }}>
+                      {event.date}
+                    </span>
+                    <span style={{ 
+                      color: '#94a3b8', 
+                      fontSize: isMobile ? '0.65rem' : '0.75rem', 
+                      fontWeight: '700', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '4px' 
+                    }}>
+                      <MapPin size={isMobile ? 12 : 14} /> {event.location}
+                    </span>
+                  </div>
+                  <h4 style={{ 
+                    fontSize: isMobile ? '0.9rem' : '1.25rem', 
+                    fontWeight: '900', 
+                    color: '#1e293b', 
+                    marginBottom: isMobile ? '6px' : '12px', 
+                    lineHeight: '1.3',
+                    display: '-webkit-box',
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden'
+                  }}>{event.name}</h4>
+                  <p style={{ 
+                    color: '#64748b', 
+                    fontSize: isMobile ? '0.75rem' : '0.9rem', 
+                    lineHeight: '1.6', 
+                    marginBottom: isMobile ? '10px' : '20px', 
+                    flex: 1,
+                    display: '-webkit-box',
+                    WebkitLineClamp: isMobile ? 2 : 3,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden'
+                  }}>
+                    {event.description}
+                  </p>
+                  <Link 
+                    href={`/network/${event.id}`}
+                    style={{ 
+                      display: 'flex', alignItems: 'center', gap: '5px', color: '#002654', 
+                      fontWeight: '800', fontSize: isMobile ? '0.65rem' : '0.8rem', textDecoration: 'none',
+                      cursor: 'pointer', padding: '0', height: isMobile ? '32px' : '48px', textTransform: 'uppercase', letterSpacing: '0.5px' 
+                    }}
+                  >
+                    READ MORE <ArrowRight size={isMobile ? 12 : 16} />
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 3. NETWORK SECTION - Member/Partner Grid */}
+      <section style={{ padding: 'clamp(60px, 8vh, 100px) 0', backgroundColor: '#ffffff', borderBottom: '1px solid #f1f5f9' }}>
         <div className="container responsive-container">
           <div style={{ textAlign: 'center', marginBottom: 'clamp(40px, 6vh, 70px)' }}>
             <h3 style={{ fontSize: 'clamp(1.5rem, 5vw, 2rem)', fontWeight: '900', color: '#002654', marginBottom: '15px', textTransform: 'uppercase', letterSpacing: '1px' }}>Global Network</h3>
@@ -94,70 +194,6 @@ export default function NetworkAndEvents() {
                 <p style={{ fontSize: '0.8rem', color: '#0056b3', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '10px' }}>{member.title}</p>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px', color: '#94a3b8', fontSize: '0.8rem', fontWeight: '600' }}>
                    <MapPin size={14} /> {member.location}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 3. EVENTS SECTION - Card Grid */}
-      <section style={{ padding: 'clamp(60px, 8vh, 100px) 0', backgroundColor: '#fcfcfc' }}>
-        <div className="container responsive-container">
-          <div style={{ textAlign: 'center', marginBottom: 'clamp(40px, 6vh, 70px)' }}>
-            <h3 style={{ fontSize: 'clamp(1.5rem, 5vw, 2rem)', fontWeight: '900', color: '#002654', marginBottom: '15px', textTransform: 'uppercase', letterSpacing: '1px' }}>Events & Impact</h3>
-            <p style={{ color: '#64748b', fontSize: 'clamp(0.9rem, 2.5vw, 1rem)', fontWeight: '500' }}>Witness our journey through recent field visits and summits.</p>
-            <div style={{ width: '40px', height: '4px', backgroundColor: '#16a34a', margin: '20px auto 0' }}></div>
-          </div>
-
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', 
-            gap: '30px',
-            justifyContent: 'center'
-          }}>
-            {events.map(event => (
-              <div key={event.id} style={{ 
-                backgroundColor: 'white', borderRadius: '16px', overflow: 'hidden', 
-                boxShadow: '0 10px 40px rgba(0,0,0,0.04)', border: '1px solid #f1f5f9',
-                display: 'flex', flexDirection: 'column', height: '100%' 
-              }} className="event-card">
-                <div style={{ aspectRatio: '16/9', overflow: 'hidden' }}>
-                  <img src={event.image} alt={event.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </div>
-                <div style={{ padding: '25px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
-                    <span style={{ fontSize: '0.7rem', fontWeight: '800', backgroundColor: '#eff6ff', color: '#0056b3', padding: '6px 14px', borderRadius: '4px' }}>
-                      {event.date}
-                    </span>
-                    <span style={{ fontSize: '0.7rem', fontWeight: '800', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <MapPin size={12} /> {event.location}
-                    </span>
-                  </div>
-                  <h4 style={{ fontSize: '1.25rem', fontWeight: '900', color: '#1e293b', marginBottom: '12px', lineHeight: '1.3' }}>{event.name}</h4>
-                  <p style={{ 
-                    color: '#64748b', 
-                    fontSize: '0.9rem', 
-                    lineHeight: '1.7', 
-                    marginBottom: '20px', 
-                    flex: 1,
-                    display: '-webkit-box',
-                    WebkitLineClamp: 3,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden'
-                  }}>
-                    {event.description}
-                  </p>
-                  <Link 
-                    href={`/network/${event.id}`}
-                    style={{ 
-                      display: 'flex', alignItems: 'center', gap: '8px', color: '#002654', 
-                      fontWeight: '800', fontSize: '0.8rem', textDecoration: 'none',
-                      cursor: 'pointer', padding: '0', height: '48px', textTransform: 'uppercase', letterSpacing: '0.5px' 
-                    }}
-                  >
-                    READ MORE <ArrowRight size={16} />
-                  </Link>
                 </div>
               </div>
             ))}

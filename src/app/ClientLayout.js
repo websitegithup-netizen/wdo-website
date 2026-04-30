@@ -87,6 +87,7 @@ export default function ClientLayout({ children }) {
   return (
     <>
       {/* Top Bar - Hidden on Mobile */}
+      {!(pathname.startsWith('/network/') && pathname !== '/network') && (
       <div className="hidden-mobile" style={{
         backgroundColor: isScrolled ? '#001a3a' : '#002654',
         color: 'white',
@@ -109,6 +110,7 @@ export default function ClientLayout({ children }) {
           </a>
         </div>
       </div>
+      )}
 
       <header className="header" style={{
         position: 'fixed',
@@ -320,7 +322,7 @@ export default function ClientLayout({ children }) {
       {isMenuOpen && <div onClick={() => setIsMenuOpen(false)} style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1999, backdropFilter: 'blur(4px)' }} />}
 
       <main className="main-content" style={{
-        paddingTop: pathname === '/' ? '0' : (isMobile ? '70px' : '90px'),
+        paddingTop: (pathname === '/' || pathname === '/network' || (pathname.startsWith('/network/') && pathname !== '/network')) ? '0' : (isMobile ? '70px' : '90px'),
         minHeight: '80vh'
       }}>
         {children}
