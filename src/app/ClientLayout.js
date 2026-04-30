@@ -164,14 +164,6 @@ export default function ClientLayout({ children }) {
           </nav>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-            <Link href="/network" className="hidden-mobile" style={{
-              backgroundColor: '#0056b3', color: 'white', padding: '8px 20px',
-              fontWeight: '900', fontSize: '0.75rem', textDecoration: 'none',
-              borderRadius: '100px', display: 'block', whiteSpace: 'nowrap',
-              boxShadow: '0 4px 10px rgba(0,86,179,0.2)'
-            }}>
-              JOIN NETWORK
-            </Link>
             <Link href="/donate" className="hidden-mobile" style={{
               backgroundColor: '#ffc107', color: '#002654', padding: '8px 20px',
               fontWeight: '900', fontSize: '0.75rem', textDecoration: 'none',
