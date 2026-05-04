@@ -173,10 +173,12 @@ export default function ClientLayout({ children }) {
             {navLinks.map((link) => (
               <div key={link.name} className={link.dropdown ? "nav-dropdown-container" : ""} style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center' }}>
                 <Link
-                  href={link.href}
+                  href={link.dropdown ? '#' : link.href}
                   onClick={(e) => {
-                    if (link.dropdown && isMobile) {
+                    if (link.dropdown) {
                       e.preventDefault();
+                    } else {
+                      setIsMenuOpen(false);
                     }
                   }}
                   style={{ color: 'white', fontWeight: '700', fontSize: '0.75rem', textDecoration: 'none', letterSpacing: '0.5px', whiteSpace: 'nowrap' }}
@@ -251,8 +253,27 @@ export default function ClientLayout({ children }) {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div style={{ display: 'flex', alignItems: 'center', width: '100%', gap: '5px' }}>
                     <Link
-                      href={link.href}
-                      onClick={() => setIsMenuOpen(false)}
+                      href={link.dropdown ? '#' : link.href}
+                      onClick={(e) => {
+                        if (!link.dropdown) {
+                          setIsMenuOpen(false);
+                        } else {
+                          e.preventDefault();
+                          const el = document.getElementById(`mobile-drop-${link.name}`);
+                          const icon = document.getElementById(`mobile-icon-${link.name}`);
+                          if (el.style.maxHeight === '0px' || !el.style.maxHeight) {
+                            el.style.maxHeight = '500px';
+                            el.style.opacity = '1';
+                            el.style.marginTop = '8px';
+                            icon.style.transform = 'rotate(180deg)';
+                          } else {
+                            el.style.maxHeight = '0px';
+                            el.style.opacity = '0';
+                            el.style.marginTop = '0px';
+                            icon.style.transform = 'rotate(0deg)';
+                          }
+                        }
+                      }}
                       style={{
                         color: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#0056b3' : '#1e293b',
                         backgroundColor: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#eff6ff' : 'transparent',
