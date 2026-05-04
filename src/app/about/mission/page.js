@@ -1,5 +1,5 @@
 import React from 'react'
-import { Target, Eye, ShieldCheck, Award, Zap, ArrowRight, Heart } from 'lucide-react'
+import { Target, Eye, ShieldCheck, Award, Zap, ArrowRight, Heart, Users } from 'lucide-react'
 
 export const metadata = {
   title: 'Mission, Vision & Values | Waqal Development Organization (WDO)',
@@ -77,7 +77,7 @@ export default function MissionVision() {
               </h1>
               
               <p style={{ fontSize: '1rem', lineHeight: '1.6', color: '#475569', marginBottom: '20px', fontWeight: '400' }}>
-                We are dedicated to providing quality basic services, skills, and educational opportunities for vulnerable households through innovative technologies and sustainable community-led development.
+                To empower the communities of Somaliland through education, access to healthcare, youth engagement, and sustainable environmental initiatives.
               </p>
               
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
@@ -141,7 +141,7 @@ export default function MissionVision() {
               </h1>
               
               <p style={{ fontSize: '1rem', lineHeight: '1.6', color: '#475569', marginBottom: '20px' }}>
-                A resilient and socially responsible society in Somaliland, where every community has the resources, knowledge, and agency to build a sustainable and prosperous future.
+                To create a future where every individual in Somaliland has access to quality education, healthcare, youth development opportunities, and sustainable environmental practices.
               </p>
 
               <button className="hover-scale" style={{ 
@@ -168,15 +168,41 @@ export default function MissionVision() {
 
           <div className="values-grid">
             {[
-              { title: 'Integrity', icon: <ShieldCheck size={28} />, color: '#16a34a' },
-              { title: 'Innovation', icon: <Zap size={28} />, color: '#ffc107' },
-              { title: 'Compassion', icon: <Heart size={28} />, color: '#ef4444' },
-              { title: 'Excellence', icon: <Award size={28} />, color: '#3b82f6' }
+              { 
+                title: 'Integrity', 
+                icon: <ShieldCheck size={28} />, 
+                color: '#16a34a',
+                desc: 'We hold ourselves to the highest ethical standards, ensuring honesty, fairness, and transparency in everything we do to build lasting trust with our community.'
+              },
+              { 
+                title: 'Innovation', 
+                icon: <Zap size={28} />, 
+                color: '#ffc107',
+                desc: 'We constantly seek creative and adaptive solutions to meet evolving challenges, ensuring our services remain modern and effective.'
+              },
+              { 
+                title: 'Compassion', 
+                icon: <Heart size={28} />, 
+                color: '#ef4444',
+                desc: 'We place humanity at the heart of our operations, acting with empathy to protect the dignity and well-being of the people we serve.'
+              },
+              { 
+                title: 'Excellence', 
+                icon: <Award size={28} />, 
+                color: '#3b82f6',
+                desc: 'We are committed to delivering high-quality, professional results in every project and partnership to ensure a meaningful impact.'
+              },
+              { 
+                title: 'Accountability', 
+                icon: <Users size={28} />, 
+                color: '#8b5cf6',
+                desc: 'We take full ownership of our actions and resources, remaining answerable to our members, partners, and the communities we support'
+              }
             ].map((v) => (
               <div key={v.title} className="hover-scale value-card" style={{ borderLeft: `4px solid ${v.color}`, backgroundColor: '#f8fafc', borderRadius: '0 12px 12px 0' }}>
                 <div style={{ color: v.color, marginBottom: '15px' }} className="value-icon">{v.icon}</div>
                 <h4 style={{ fontWeight: '900', color: '#1e293b' }} className="value-title">{v.title}</h4>
-                <p style={{ color: '#64748b', lineHeight: '1.6' }} className="value-desc">We uphold the highest standards in every project we undertake.</p>
+                <p style={{ color: '#64748b', lineHeight: '1.6' }} className="value-desc">{v.desc}</p>
               </div>
             ))}
           </div>

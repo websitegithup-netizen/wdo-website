@@ -337,7 +337,7 @@ export default function ClientLayout({ children }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
               <img src="/logo.png" alt="WDO" style={{ height: '50px', width: 'auto', alignSelf: 'flex-start' }} />
               <p style={{ fontSize: '0.85rem', opacity: 0.7, lineHeight: '1.6', margin: 0 }}>
-                Building a sustainable future for Somaliland through education, healthcare, and empowerment.
+                Empowering the communities of Somaliland through education, healthcare, youth engagement, and sustainable environmental initiatives.
               </p>
               <div style={{ display: 'flex', gap: '12px', marginTop: '5px' }}>
                 <a href="#" style={{ color: '#ffc107' }}><Globe size={18} /></a>
