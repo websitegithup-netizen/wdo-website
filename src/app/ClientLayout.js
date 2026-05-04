@@ -174,10 +174,8 @@ export default function ClientLayout({ children }) {
               <div key={link.name} className={link.dropdown ? "nav-dropdown-container" : ""} style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center' }}>
                 <Link
                   href={link.dropdown ? '#' : link.href}
-                  onClick={(e) => {
-                    if (link.dropdown) {
-                      e.preventDefault();
-                    } else {
+                  onClick={() => {
+                    if (!link.dropdown) {
                       setIsMenuOpen(false);
                     }
                   }}
