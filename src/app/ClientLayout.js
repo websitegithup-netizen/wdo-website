@@ -173,8 +173,12 @@ export default function ClientLayout({ children }) {
             {navLinks.map((link) => (
               <div key={link.name} className={link.dropdown ? "nav-dropdown-container" : ""} style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center' }}>
                 <Link
-                  href={link.dropdown ? '#' : link.href}
-                  onClick={(e) => link.dropdown && e.preventDefault()}
+                  href={link.href}
+                  onClick={(e) => {
+                    if (link.dropdown && isMobile) {
+                      e.preventDefault();
+                    }
+                  }}
                   style={{ color: 'white', fontWeight: '700', fontSize: '0.75rem', textDecoration: 'none', letterSpacing: '0.5px', whiteSpace: 'nowrap' }}
                 >
                   {link.name}
@@ -245,45 +249,48 @@ export default function ClientLayout({ children }) {
             {navLinks.map((link, idx) => (
               <div key={link.name}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Link
-                    href={link.dropdown ? '#' : link.href}
-                    onClick={(e) => {
-                      if (!link.dropdown) setIsMenuOpen(false)
-                      else {
-                        e.preventDefault();
-                        const el = document.getElementById(`mobile-drop-${link.name}`);
-                        const icon = document.getElementById(`mobile-icon-${link.name}`);
-                        if (el.style.maxHeight === '0px' || !el.style.maxHeight) {
-                          el.style.maxHeight = '500px';
-                          el.style.opacity = '1';
-                          el.style.marginTop = '8px';
-                          icon.style.transform = 'rotate(180deg)';
-                        } else {
-                          el.style.maxHeight = '0px';
-                          el.style.opacity = '0';
-                          el.style.marginTop = '0px';
-                          icon.style.transform = 'rotate(0deg)';
-                        }
-                      }
-                    }}
-                    style={{
-                      color: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#0056b3' : '#1e293b',
-                      backgroundColor: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#eff6ff' : 'transparent',
-                      fontWeight: '800', fontSize: '0.85rem', textDecoration: 'none',
-                      display: 'flex', alignItems: 'center', gap: '10px', textTransform: 'uppercase', letterSpacing: '0.5px',
-                      padding: '10px 12px', borderRadius: '10px', flex: 1, transition: 'all 0.2s'
-                    }}
-                  >
-                    <div style={{ color: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#0056b3' : '#94a3b8' }}>
-                      {link.icon && React.cloneElement(link.icon, { size: 16 })}
-                    </div>
-                    {link.name}
-                  </Link>
-                  {link.dropdown && (
-                    <div id={`mobile-icon-${link.name}`} style={{ transition: 'transform 0.3s', color: '#94a3b8' }}>
-                      <ChevronDown size={16} />
-                    </div>
-                  )}
+                  <div style={{ display: 'flex', alignItems: 'center', width: '100%', gap: '5px' }}>
+                    <Link
+                      href={link.href}
+                      onClick={() => setIsMenuOpen(false)}
+                      style={{
+                        color: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#0056b3' : '#1e293b',
+                        backgroundColor: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#eff6ff' : 'transparent',
+                        fontWeight: '800', fontSize: '0.85rem', textDecoration: 'none',
+                        display: 'flex', alignItems: 'center', gap: '10px', textTransform: 'uppercase', letterSpacing: '0.5px',
+                        padding: '10px 12px', borderRadius: '10px', flex: 1, transition: 'all 0.2s'
+                      }}
+                    >
+                      <div style={{ color: (pathname.startsWith(link.href) && link.href !== '/') || pathname === link.href ? '#0056b3' : '#94a3b8' }}>
+                        {link.icon && React.cloneElement(link.icon, { size: 16 })}
+                      </div>
+                      {link.name}
+                    </Link>
+                    {link.dropdown && (
+                      <div 
+                        id={`mobile-icon-${link.name}`} 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          const el = document.getElementById(`mobile-drop-${link.name}`);
+                          const icon = document.getElementById(`mobile-icon-${link.name}`);
+                          if (el.style.maxHeight === '0px' || !el.style.maxHeight) {
+                            el.style.maxHeight = '500px';
+                            el.style.opacity = '1';
+                            el.style.marginTop = '8px';
+                            icon.style.transform = 'rotate(180deg)';
+                          } else {
+                            el.style.maxHeight = '0px';
+                            el.style.opacity = '0';
+                            el.style.marginTop = '0px';
+                            icon.style.transform = 'rotate(0deg)';
+                          }
+                        }}
+                        style={{ transition: 'transform 0.3s', color: '#94a3b8', padding: '10px', cursor: 'pointer' }}
+                      >
+                        <ChevronDown size={16} />
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {link.dropdown && (
