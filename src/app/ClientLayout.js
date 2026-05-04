@@ -101,12 +101,18 @@ export default function ClientLayout({ children }) {
         width: '100%',
         zIndex: 1001
       }}>
-        <div className="container" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '25px', height: '100%' }}>
-          <a href={`tel:+${phoneNo}`} onClick={handlePhoneClick} style={{ color: 'white', fontSize: '0.8rem', fontWeight: '700', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Phone size={14} fill="#ffc107" color="#ffc107" /> +252 63 3084563
+        <div className="container" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '20px', height: '100%' }}>
+          <a href="tel:+252633084563" style={{ color: 'white', fontSize: '0.75rem', fontWeight: '700', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Phone size={12} fill="#ffc107" color="#ffc107" /> +252 63 3084563
           </a>
-          <a href={gmailUrl} target="_blank" style={{ color: 'white', fontSize: '0.8rem', fontWeight: '700', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Mail size={14} fill="#ffc107" color="#ffc107" /> waqaldv@gmail.com
+          <a href="mailto:waqaldv@gmail.com" style={{ color: 'white', fontSize: '0.75rem', fontWeight: '700', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Mail size={12} fill="#ffc107" color="#ffc107" /> waqaldv@gmail.com
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=100095125541543" target="_blank" rel="noopener noreferrer" style={{ color: 'white', fontSize: '0.75rem', fontWeight: '700', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#ffc107" stroke="#ffc107" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+            </svg>
+            Facebook
           </a>
         </div>
       </div>
@@ -340,8 +346,12 @@ export default function ClientLayout({ children }) {
                 Empowering the communities of Somaliland through education, healthcare, youth engagement, and sustainable environmental initiatives.
               </p>
               <div style={{ display: 'flex', gap: '12px', marginTop: '5px' }}>
-                <a href="#" style={{ color: '#ffc107' }}><Globe size={18} /></a>
-                <a href="#" style={{ color: '#ffc107' }}><Mail size={18} /></a>
+                <a href="https://www.facebook.com/profile.php?id=100095125541543" target="_blank" rel="noopener noreferrer" style={{ color: '#ffc107' }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                  </svg>
+                </a>
+                <a href="mailto:waqaldv@gmail.com" style={{ color: '#ffc107' }}><Mail size={18} /></a>
               </div>
             </div>
 

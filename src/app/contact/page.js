@@ -67,7 +67,21 @@ export default function Contact() {
                   <div>
                     <h4 style={{ margin: '0 0 5px 0', fontWeight: '800' }}>Email Us</h4>
                     <p style={{ margin: 0, fontSize: '0.9rem' }}>
-                      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=waqaldv@gmail.com" target="_blank" style={{ color: '#0056b3', textDecoration: 'none' }}>waqaldv@gmail.com</a>
+                      <a href="mailto:waqaldv@gmail.com" style={{ color: '#0056b3', textDecoration: 'none' }}>waqaldv@gmail.com</a>
+                    </p>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', gap: '20px' }}>
+                  <div style={{ width: '50px', height: '50px', backgroundColor: '#eef6ff', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0056b3', flexShrink: 0 }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 style={{ margin: '0 0 5px 0', fontWeight: '800' }}>Follow Us</h4>
+                    <p style={{ margin: 0, fontSize: '0.9rem' }}>
+                      <a href="https://www.facebook.com/profile.php?id=100095125541543" target="_blank" rel="noopener noreferrer" style={{ color: '#0056b3', textDecoration: 'none' }}>Facebook Profile</a>
                     </p>
                   </div>
                 </div>
