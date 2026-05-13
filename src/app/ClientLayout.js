@@ -64,6 +64,7 @@ export default function ClientLayout({ children }) {
       dropdown: [
         { name: 'MISSION & VISION', href: '/about/mission' },
         { name: 'OUR OBJECTIVES', href: '/about/objectives' },
+        { name: 'OUR POLICIES', href: '/about/policy' },
         { name: 'OUR TEAM', href: '/about/team' },
         { name: 'NETWORK & EVENTS', href: '/network' }
       ]
