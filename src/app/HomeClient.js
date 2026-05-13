@@ -30,7 +30,7 @@ export default function HomeClient() {
     setMounted(true)
     const handleResize = () => setIsMobile(window.innerWidth <= 768)
     handleResize()
-    
+
     const fetchData = async () => {
       try {
         const { data: slidesData } = await supabase.from('hero_slides').select('*').order('order_index', { ascending: true })
@@ -89,7 +89,7 @@ export default function HomeClient() {
 
   return (
     <div style={{ backgroundColor: 'white' }}>
-      
+
       {/* VIP Image Slider Section */}
       <section className="hero-slider" style={{ position: 'relative', height: isMobile ? '450px' : '100vh', maxHeight: isMobile ? '450px' : '650px', overflow: 'hidden', backgroundColor: '#ffffff' }}>
         {loading ? (
@@ -102,18 +102,18 @@ export default function HomeClient() {
               <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: '#002654', backgroundImage: `url(${slide.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', transform: 'scale(1)', transition: 'transform 3.5s ease-in-out' }}></div>
               <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0, 38, 84, 0.5)' }}></div>
               <div className="slider-content" style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', alignItems: 'center', padding: isMobile ? '0 5%' : '0 10%', color: 'white' }}>
-                <div style={{ 
-                  maxWidth: '800px', 
-                  transform: currentSlide === index ? 'translateY(0)' : 'translateY(30px)', 
-                  opacity: currentSlide === index ? 1 : 0, 
+                <div style={{
+                  maxWidth: '800px',
+                  transform: currentSlide === index ? 'translateY(0)' : 'translateY(30px)',
+                  opacity: currentSlide === index ? 1 : 0,
                   transition: 'all 0.8s ease-out 0.5s',
                   textAlign: 'left'
                 }}>
                   <div style={{ width: isMobile ? '40px' : '60px', height: '4px', backgroundColor: '#ffc107', marginBottom: '15px' }}></div>
-                  <h1 style={{ 
-                    fontWeight: '900', 
-                    lineHeight: '1.1', 
-                    marginBottom: '15px', 
+                  <h1 style={{
+                    fontWeight: '900',
+                    lineHeight: '1.1',
+                    marginBottom: '15px',
                     color: '#ffffff',
                     fontSize: isMobile ? '1.8rem' : '3.5rem',
                     textShadow: '0 2px 10px rgba(0,0,0,0.3)'
@@ -121,32 +121,32 @@ export default function HomeClient() {
                     {slide.title}
                   </h1>
                   <div style={{ width: isMobile ? '40px' : '60px', height: '4px', backgroundColor: '#ffc107', marginBottom: '20px' }}></div>
-                  <p style={{ 
-                    fontSize: isMobile ? '0.9rem' : '1.1rem', 
-                    lineHeight: '1.5', 
-                    color: '#ffffff', 
-                    marginBottom: '20px', 
+                  <p style={{
+                    fontSize: isMobile ? '0.9rem' : '1.1rem',
+                    lineHeight: '1.5',
+                    color: '#ffffff',
+                    marginBottom: '20px',
                     opacity: 0.95,
                     maxWidth: '600px'
                   }}>
                     {slide.description}
                   </p>
-                  
-                  <Link 
+
+                  <Link
                     href={
                       slide.title.toLowerCase().includes('education') ? '/programs/education' :
-                      slide.title.toLowerCase().includes('health') ? '/programs/health' :
-                      slide.title.toLowerCase().includes('youth') ? '/programs/youth' :
-                      slide.title.toLowerCase().includes('environment') ? '/programs/environment' :
-                      '/programs'
-                    } 
-                    style={{ 
+                        slide.title.toLowerCase().includes('health') ? '/programs/health' :
+                          slide.title.toLowerCase().includes('youth') ? '/programs/youth' :
+                            slide.title.toLowerCase().includes('environment') ? '/programs/environment' :
+                              '/programs'
+                    }
+                    style={{
                       display: 'inline-block',
-                      backgroundColor: '#ffc107', 
-                      color: '#1e293b', 
-                      padding: isMobile ? '10px 25px' : '12px 35px', 
-                      fontWeight: '900', 
-                      fontSize: isMobile ? '0.85rem' : '1rem', 
+                      backgroundColor: '#ffc107',
+                      color: '#1e293b',
+                      padding: isMobile ? '10px 25px' : '12px 35px',
+                      fontWeight: '900',
+                      fontSize: isMobile ? '0.85rem' : '1rem',
                       textDecoration: 'none',
                       borderRadius: '2px',
                       boxShadow: '0 10px 20px rgba(0,0,0,0.2)'
@@ -182,10 +182,10 @@ export default function HomeClient() {
               </p>
               <Link href="/about/mission" className="btn btn-outline" style={{ padding: '12px 30px', fontWeight: '800' }}>Read More About Us</Link>
             </div>
-            <div className="card" style={{ 
-              padding: 0, backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', boxShadow: '0 20px 40px rgba(0,0,0,0.05)', 
-              borderRadius: '24px', overflow: 'hidden', height: '100%', minHeight: '350px', position: 'relative', 
-              display: 'flex', alignItems: 'center', justifyContent: 'center' 
+            <div className="card" style={{
+              padding: 0, backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', boxShadow: '0 20px 40px rgba(0,0,0,0.05)',
+              borderRadius: '24px', overflow: 'hidden', height: '100%', minHeight: '350px', position: 'relative',
+              display: 'flex', alignItems: 'center', justifyContent: 'center'
             }}>
               <img src="/logo.png" alt="WDO Logo" style={{ width: '100%', maxWidth: '200px', marginBottom: '50px', filter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.08))' }} />
               <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', padding: '25px', background: 'linear-gradient(to top, rgba(0,86,179,0.95), transparent)', color: 'white' }}>
@@ -206,10 +206,10 @@ export default function HomeClient() {
             <h2 className="responsive-h2" style={{ fontWeight: '900', marginBottom: '15px' }}>Our Core Programs</h2>
             <p style={{ color: '#64748b' }}>Targeted interventions for sustainable growth in Somaliland.</p>
           </div>
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', 
-            gap: isMobile ? '12px' : '25px' 
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
+            gap: isMobile ? '12px' : '25px'
           }}>
             {[
               { title: 'Improving Education', icon: <BookOpen size={isMobile ? 20 : 24} />, desc: 'Enhancing educational access for vulnerable households and climate-affected communities through innovative technologies and community resources.', delay: 'delay-100' },
@@ -217,26 +217,26 @@ export default function HomeClient() {
               { title: 'Youth Development', icon: <Users size={isMobile ? 20 : 24} />, desc: "Improving access to equitable quality basic services, skills, and educational opportunities for Somaliland's youth.", delay: 'delay-300' },
               { title: 'Environmental Improvement', icon: <TreePine size={isMobile ? 20 : 24} />, desc: 'Promoting initiatives for environmental sustainability and conservation.', delay: 'delay-500' }
             ].map((program) => (
-              <div key={program.title} className={`card hover-scale animate-fade-up ${program.delay}`} style={{ 
-                padding: isMobile ? '15px' : '30px', 
-                border: 'none', 
-                boxShadow: '0 4px 15px rgba(0,0,0,0.03)', 
-                display: 'flex', 
-                flexDirection: 'column', 
+              <div key={program.title} className={`card hover-scale animate-fade-up ${program.delay}`} style={{
+                padding: isMobile ? '15px' : '30px',
+                border: 'none',
+                boxShadow: '0 4px 15px rgba(0,0,0,0.03)',
+                display: 'flex',
+                flexDirection: 'column',
                 height: '100%',
                 borderRadius: isMobile ? '12px' : '20px'
               }}>
-                <div style={{ 
-                  backgroundColor: '#0056b3', 
-                  color: 'white', 
-                  width: isMobile ? '36px' : '50px', 
-                  height: isMobile ? '36px' : '50px', 
-                  borderRadius: isMobile ? '8px' : '12px', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center', 
-                  marginBottom: isMobile ? '12px' : '20px', 
-                  flexShrink: 0 
+                <div style={{
+                  backgroundColor: '#0056b3',
+                  color: 'white',
+                  width: isMobile ? '36px' : '50px',
+                  height: isMobile ? '36px' : '50px',
+                  borderRadius: isMobile ? '8px' : '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: isMobile ? '12px' : '20px',
+                  flexShrink: 0
                 }}>{program.icon}</div>
                 <h4 style={{ fontSize: isMobile ? '0.9rem' : '1.2rem', fontWeight: '900', marginBottom: isMobile ? '8px' : '12px', color: '#1e293b', lineHeight: '1.2' }}>{program.title}</h4>
                 <p style={{ color: '#64748b', fontSize: isMobile ? '0.75rem' : '0.9rem', lineHeight: '1.6' }}>{program.desc}</p>
@@ -273,65 +273,65 @@ export default function HomeClient() {
 
       {/* Newsletter Signup */}
       <section style={{ backgroundColor: '#f8fafc', padding: '60px 20px', textAlign: 'center', borderTop: '1px solid #e2e8f0' }}>
-         <div style={{ maxWidth: '500px', margin: '0 auto' }}>
-            <h3 style={{ fontSize: '1.5rem', fontWeight: '900', marginBottom: '10px' }}>Stay Connected</h3>
-            <p style={{ color: '#64748b', marginBottom: '25px', fontSize: '1rem' }}>Get the latest WDO stories and impact reports.</p>
-            {status && (
-              <div style={{ 
-                padding: '12px', 
-                borderRadius: '8px', 
-                marginBottom: '20px', 
-                fontSize: '0.9rem', 
-                fontWeight: '700',
-                backgroundColor: status.type === 'success' ? '#f0fdf4' : '#fef2f2',
-                color: status.type === 'success' ? '#16a34a' : '#dc2626',
-                border: `1px solid ${status.type === 'success' ? '#bbf7d0' : '#fecaca'}`
-              }}>
-                {status.text}
-              </div>
-            )}
-            <form onSubmit={handleSubscribe} className="newsletter-form" style={{ display: 'flex', gap: '10px' }}>
-               <input 
-                 type="email" 
-                 required
-                 placeholder="Email address" 
-                 value={email}
-                 onChange={(e) => setEmail(e.target.value)}
-                 style={{ flex: 1, padding: '12px 15px', borderRadius: '8px', border: '1px solid #e2e8f0', outline: 'none', fontSize: '1rem' }} 
-               />
-               <button 
-                 type="submit"
-                 disabled={subscribing}
-                 className="subscribe-btn"
-                 style={{ 
-                   padding: '12px 25px', 
-                   backgroundColor: '#002654', 
-                   color: 'white', 
-                   border: 'none', 
-                   borderRadius: '8px', 
-                   fontWeight: '900', 
-                   cursor: subscribing ? 'not-allowed' : 'pointer', 
-                   fontSize: '0.9rem',
-                   opacity: subscribing ? 0.8 : 1,
-                   whiteSpace: 'nowrap'
-                 }}
-               >
-                 {subscribing ? '...' : 'SUBSCRIBE'}
-               </button>
-            </form>
-         </div>
+        <div style={{ maxWidth: '500px', margin: '0 auto' }}>
+          <h3 style={{ fontSize: '1.5rem', fontWeight: '900', marginBottom: '10px' }}>Stay Connected</h3>
+          <p style={{ color: '#64748b', marginBottom: '25px', fontSize: '1rem' }}>Get the latest WDO stories and impact reports.</p>
+          {status && (
+            <div style={{
+              padding: '12px',
+              borderRadius: '8px',
+              marginBottom: '20px',
+              fontSize: '0.9rem',
+              fontWeight: '700',
+              backgroundColor: status.type === 'success' ? '#f0fdf4' : '#fef2f2',
+              color: status.type === 'success' ? '#16a34a' : '#dc2626',
+              border: `1px solid ${status.type === 'success' ? '#bbf7d0' : '#fecaca'}`
+            }}>
+              {status.text}
+            </div>
+          )}
+          <form onSubmit={handleSubscribe} className="newsletter-form" style={{ display: 'flex', gap: '10px' }}>
+            <input
+              type="email"
+              required
+              placeholder="Email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              style={{ flex: 1, padding: '12px 15px', borderRadius: '8px', border: '1px solid #e2e8f0', outline: 'none', fontSize: '1rem' }}
+            />
+            <button
+              type="submit"
+              disabled={subscribing}
+              className="subscribe-btn"
+              style={{
+                padding: '12px 25px',
+                backgroundColor: '#002654',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                fontWeight: '900',
+                cursor: subscribing ? 'not-allowed' : 'pointer',
+                fontSize: '0.9rem',
+                opacity: subscribing ? 0.8 : 1,
+                whiteSpace: 'nowrap'
+              }}
+            >
+              {subscribing ? '...' : 'SUBSCRIBE'}
+            </button>
+          </form>
+        </div>
       </section>
 
       {/* CTA Section */}
       <section className="section" style={{ backgroundColor: '#002654', textAlign: 'center', color: 'white', padding: '40px 0' }}>
         <div className="container">
           <h2 style={{ fontSize: isMobile ? '1.5rem' : '2.2rem', fontWeight: '900', marginBottom: '15px', color: 'white' }}>Support Our Cause</h2>
-          <p style={{ fontSize: isMobile ? '0.9rem' : '1rem', opacity: 0.9, maxWidth: '600px', margin: '0 auto 25px' }}>Join us in building a resilient and socially responsible society in Somaliland.</p>
-          <Link href="/donate" style={{ 
+          <p style={{ fontSize: isMobile ? '0.9rem' : '1rem', opacity: 0.9, maxWidth: '600px', margin: '0 auto 25px' }}>"To create a future where every individual in Somaliland has access to quality education, healthcare, youth development opportunities, and sustainable environmental practices."</p>
+          <Link href="/donate" style={{
             display: 'inline-block',
-            backgroundColor: '#ffc107', 
-            color: '#002654', 
-            padding: isMobile ? '10px 25px' : '12px 35px', 
+            backgroundColor: '#ffc107',
+            color: '#002654',
+            padding: isMobile ? '10px 25px' : '12px 35px',
             fontSize: isMobile ? '0.85rem' : '1rem',
             fontWeight: '900',
             textDecoration: 'none',
@@ -340,8 +340,9 @@ export default function HomeClient() {
           }}>Donate Now</Link>
         </div>
       </section>
-      
-      <style dangerouslySetInnerHTML={{ __html: `
+
+      <style dangerouslySetInnerHTML={{
+        __html: `
         .responsive-h1 { font-size: 2.8rem; }
         .responsive-h2 { font-size: 2.2rem; }
         .responsive-p { font-size: 1.1rem; }
