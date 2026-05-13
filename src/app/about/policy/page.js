@@ -128,7 +128,16 @@ export default function PolicyPage() {
       <style dangerouslySetInnerHTML={{ __html: `
         @media (max-width: 768px) {
           .section { padding: 40px 0 !important; }
-          h1 { fontSize: 2.2rem !important; }
+          h1 { font-size: 2.2rem !important; }
+          .container > div:first-child { 
+            grid-template-columns: repeat(2, 1fr) !important; 
+            gap: 12px !important; 
+          }
+          .hover-scale { padding: 15px !important; border-radius: 12px !important; }
+          .hover-scale h3 { font-size: 1rem !important; }
+          .hover-scale p { font-size: 0.75rem !important; line-height: 1.4 !important; }
+          .hover-scale div[style*="flexDirection: column"] { gap: 5px !important; }
+          .hover-scale div[style*="fontWeight: 700"] { font-size: 0.7rem !important; }
         }
       `}} />
     </div>
