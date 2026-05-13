@@ -35,7 +35,7 @@ export default async function Programs() {
           <div className="text-center mb-12" style={{ maxWidth: '900px', margin: '0 auto 60px' }}>
             <h2 style={{ fontSize: '2rem', fontWeight: '900', color: '#0056b3', marginBottom: '20px' }}>Strategic Focus Areas</h2>
             <p className="text-muted" style={{ fontSize: '1.1rem', lineHeight: '1.8' }}>
-              Waqal Development Organization (WDO) provides project development solutions focused on grassroots efforts aimed at alleviating poverty and human suffering while fostering social change through these four key pillars.
+              WDO fosters sustainable progress by expanding educational access through innovative technology and delivering essential healthcare focused on women and children. We are dedicated to empowering youth through skills and quality services while driving environmental sustainability and climate resilience to build stronger, more equitable communities across Somaliland.
             </p>
           </div>
 
